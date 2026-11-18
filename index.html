@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Phan Phuc Dat — IT Business Analyst &amp; System Architecture Portfolio</title>
+  <meta name="description" content="Portfolio of Phan Phuc Dat — IT Business Analyst, Digital Transformation, FinTech Architecture &amp; Product Data Analytics." />
+  <style>
+    :root {
+      --bg: #f8fafc;
+      --surface: #ffffff;
+      --surface-alt: #f1f5f9;
+      --border: #e2e8f0;
+      --text: #0f172a;
+      --muted: #475569;
+      --subtle: #64748b;
+      --accent: #0284c7;
+      --accent-soft: rgba(2, 132, 199, 0.1);
+      --emerald: #059669;
+      --emerald-soft: rgba(5, 150, 105, 0.1);
+      --violet: #7c3aed;
+      --shadow: 0 1px 3px rgba(15, 23, 42, 0.06), 0 8px 24px rgba(15, 23, 42, 0.04);
+    }
+    html[data-theme="dark"] {
+      --bg: #090e1a;
+      --surface: #0f172a;
+      --surface-alt: #162033;
+      --border: #1e293b;
+      --text: #f8fafc;
+      --muted: #cbd5e1;
+      --subtle: #94a3b8;
+      --accent: #38bdf8;
+      --accent-soft: rgba(56, 189, 248, 0.12);
+      --emerald: #34d399;
+      --emerald-soft: rgba(52, 211, 153, 0.12);
+      --violet: #a78bfa;
+      --shadow: 0 4px 24px rgba(0, 0, 0, 0.35);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Roboto, Helvetica, Arial, sans-serif;
+      line-height: 1.65;
+      font-size: 15px;
+      -webkit-font-smoothing: antialiased;
+      transition: background 0.2s ease, color 0.2s ease;
+    }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; }
+    .container { max-width: 900px; margin: 0 auto; padding: 0 24px 72px; }
+
+    header.site-nav {
+      position: sticky; top: 0; z-index: 30;
+      backdrop-filter: blur(12px);
+      background: color-mix(in srgb, var(--bg) 84%, transparent);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-inner {
+      max-width: 900px; margin: 0 auto; padding: 14px 24px;
+      display: flex; align-items: center; justify-content: space-between; gap: 16px;
+    }
+    .brand { font-weight: 700; font-size: 15px; color: var(--text); letter-spacing: -0.2px; display: flex; align-items: center; gap: 10px; }
+    .brand-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--emerald); box-shadow: 0 0 10px var(--emerald); }
+    .nav-links { display: flex; align-items: center; gap: 20px; font-size: 13.5px; }
+    .nav-links a { color: var(--muted); font-weight: 500; }
+    .nav-links a:hover { color: var(--text); text-decoration: none; }
+    .theme-btn {
+      background: var(--surface); border: 1px solid var(--border); color: var(--text);
+      padding: 6px 12px; border-radius: 8px; cursor: pointer; font-size: 12.5px; font-weight: 600;
+    }
+
+    .hero { padding: 52px 0 36px; border-bottom: 1px solid var(--border); }
+    .status-pill {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: var(--emerald-soft); color: var(--emerald);
+      border: 1px solid color-mix(in srgb, var(--emerald) 35%, transparent);
+      padding: 4px 12px; border-radius: 999px; font-size: 12px; font-weight: 600; margin-bottom: 18px;
+    }
+    .hero-grid { display: grid; grid-template-columns: 1fr auto; gap: 24px; align-items: start; }
+    h1 { font-size: 36px; font-weight: 800; letter-spacing: -0.8px; line-height: 1.15; margin-bottom: 10px; }
+    .subtitle { font-size: 16.5px; color: var(--muted); max-width: 660px; margin-bottom: 18px; }
+    .avatar-box {
+      width: 80px; height: 80px; border-radius: 18px;
+      background: linear-gradient(135deg, #0284c7, #10b981);
+      display: flex; align-items: center; justify-content: center;
+      color: #fff; font-weight: 800; font-size: 24px; letter-spacing: -1px;
+      box-shadow: var(--shadow);
+    }
+    .badge-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+    .badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 5px 11px; border-radius: 6px; font-size: 12.5px; font-weight: 600;
+      background: var(--surface); border: 1px solid var(--border); color: var(--text);
+    }
+    .badge:hover { border-color: var(--accent); text-decoration: none; }
+
+    /* Methodology Pillars (No KPI numbers) */
+    .pillar-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 28px;
+    }
+    .pillar-card {
+      background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
+      padding: 18px; box-shadow: var(--shadow);
+    }
+    .pillar-tag { font-size: 11.5px; font-weight: 700; color: var(--accent); margin-bottom: 6px; }
+    .pillar-title { font-size: 14.5px; font-weight: 700; color: var(--text); margin-bottom: 6px; }
+    .pillar-desc { font-size: 13px; color: var(--muted); line-height: 1.55; }
+
+    section { padding-top: 42px; }
+    .sec-head { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 18px; flex-wrap: wrap; gap: 8px; }
+    h2 { font-size: 20px; font-weight: 700; letter-spacing: -0.3px; }
+    .sec-tag { font-size: 12px; color: var(--subtle); text-transform: uppercase; letter-spacing: 0.8px; }
+
+    /* Interactive Stage Explorer */
+    .stage-tabs { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+    .stage-tab {
+      background: var(--surface); border: 1px solid var(--border); color: var(--muted);
+      padding: 9px 16px; border-radius: 9px; cursor: pointer; font-size: 13px; font-weight: 600;
+      transition: all 0.15s ease;
+    }
+    .stage-tab.active {
+      background: var(--accent-soft); border-color: var(--accent); color: var(--accent);
+    }
+    .stage-panel {
+      background: var(--surface); border: 1px solid var(--border); border-radius: 14px;
+      padding: 24px; box-shadow: var(--shadow);
+    }
+    .stage-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; flex-wrap: wrap; margin-bottom: 14px; }
+    .stage-title { font-size: 18px; font-weight: 700; }
+    .repo-btn {
+      padding: 6px 12px; border-radius: 7px; font-size: 12.5px; font-weight: 600;
+      background: var(--surface-alt); border: 1px solid var(--border); color: var(--text);
+    }
+    .two-col { display: grid; grid-template-columns: 1.25fr 1fr; gap: 20px; margin-top: 14px; }
+    ul.clean-list { list-style: none; display: grid; gap: 10px; }
+    ul.clean-list li { position: relative; padding-left: 18px; color: var(--muted); font-size: 14px; }
+    ul.clean-list li::before {
+      content: "▹"; position: absolute; left: 0; color: var(--accent); font-weight: 700;
+    }
+    .artifact-box {
+      background: var(--surface-alt); border: 1px solid var(--border); border-radius: 10px; padding: 16px;
+    }
+    .artifact-item {
+      padding: 9px 11px; border-radius: 8px; background: var(--surface); border: 1px solid var(--border);
+      margin-top: 8px; font-size: 13px;
+    }
+
+    .cred-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+    .cred-item {
+      background: var(--surface); border: 1px solid var(--border); border-radius: 10px;
+      padding: 15px 16px; display: flex; justify-content: space-between; align-items: center; gap: 12px;
+    }
+    .stack-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+    .stack-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 16px; }
+    .tag-wrap { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+    .chip {
+      font-size: 12px; padding: 3px 9px; border-radius: 6px;
+      background: var(--surface-alt); border: 1px solid var(--border); color: var(--muted);
+    }
+
+    footer { margin-top: 56px; padding-top: 24px; border-top: 1px solid var(--border); display: flex; justify-content: space-between; font-size: 13px; color: var(--subtle); flex-wrap: wrap; gap: 12px; }
+
+    @media (max-width: 720px) {
+      .pillar-grid, .two-col, .cred-grid, .stack-grid { grid-template-columns: 1fr; }
+      .hero-grid { grid-template-columns: 1fr; }
+      .avatar-box { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <header class="site-nav">
+    <div class="nav-inner">
+      <div class="brand">
+        <span class="brand-dot"></span>
+        <span>Phan Phuc Dat</span>
+        <span class="mono" style="color:var(--subtle);font-weight:500;font-size:12.5px;">@phucdatphan</span>
+      </div>
+      <nav class="nav-links">
+        <a href="#works">Case Study</a>
+        <a href="#stack">Stack</a>
+        <button class="theme-btn" id="themeToggle" type="button">☀️ Light</button>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="hero">
+      <div class="status-pill mono">● IT BUSINESS ANALYST · DIGITAL TRANSFORMATION · FINTECH</div>
+      <div class="hero-grid">
+        <div>
+          <h1>Phan Phuc Dat</h1>
+          <p class="subtitle">
+            Innovation &amp; Technology graduate at <strong>University of Economics Ho Chi Minh City (UEH)</strong> bridging <strong>BABOK-aligned system specifications</strong> with <strong>working FinTech prototypes, UX flows, and relational data diagnostics</strong>.
+          </p>
+          <div class="badge-row">
+            <a class="badge" href="mailto:phucdat.work@gmail.com">✉️ phucdat.work@gmail.com</a>
+            <a class="badge" href="https://linkedin.com/in/phucdatphan" target="_blank" rel="noreferrer">🔗 LinkedIn</a>
+            <a class="badge" href="https://github.com/phucdatphan" target="_blank" rel="noreferrer">🐙 GitHub (@phucdatphan)</a>
+            <span class="badge">📍 Ho Chi Minh City, VN</span>
+          </div>
+        </div>
+        <div class="avatar-box" aria-hidden="true">PD</div>
+      </div>
+
+      <div class="pillar-grid">
+        <div class="pillar-card">
+          <div class="pillar-tag mono">LAYER I · SPECIFICATION</div>
+          <div class="pillar-title">BABOK &amp; Domain Modeling</div>
+          <p class="pillar-desc">Structuring ambiguous business requirements into clear BRD/SRS documents, state transition models, and testable Gherkin stories.</p>
+        </div>
+        <div class="pillar-card">
+          <div class="pillar-tag mono" style="color:var(--violet)">LAYER II · ARCHITECTURE</div>
+          <div class="pillar-title">Payment &amp; System Integrity</div>
+          <p class="pillar-desc">Prototyping webhook-driven E-Wallet flows with canonical HMAC signatures, timing-safe checks, and idempotent state guards.</p>
+        </div>
+        <div class="pillar-card">
+          <div class="pillar-tag mono" style="color:var(--emerald)">LAYER III · DIAGNOSTICS</div>
+          <div class="pillar-title">Settlement &amp; Risk Analytics</div>
+          <p class="pillar-desc">Auditing checkout conversion funnels, multi-party financial reconciliation, and anomaly rules using SQL and Python.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="works">
+      <div class="sec-head">
+        <h2>Selected System Case Study: End-to-End E-Wallet Payment Architecture</h2>
+        <span class="sec-tag mono">Closed-Loop Product Lifecycle</span>
+      </div>
+
+      <div class="stage-tabs" role="tablist">
+        <button class="stage-tab active" data-stage="1" type="button">Stage I · Core &amp; Security Spec</button>
+        <button class="stage-tab" data-stage="2" type="button">Stage II · Checkout UX &amp; UAT</button>
+        <button class="stage-tab" data-stage="3" type="button">Stage III · Settlement Recon &amp; Fraud BI</button>
+      </div>
+
+      <div class="stage-panel" id="stageContent"></div>
+    </section>
+
+    <section id="stack">
+      <div class="sec-head">
+        <h2>Technical &amp; Business Analysis Stack</h2>
+        <span class="sec-tag mono">Methods &amp; Tooling</span>
+      </div>
+      <div class="stack-grid">
+        <div class="stack-card">
+          <div style="font-weight:700;font-size:14.5px;">BA &amp; Product Specs</div>
+          <div class="tag-wrap">
+            <span class="chip">BABOK</span><span class="chip">BRD / SRS</span><span class="chip">Agile / Scrum</span>
+            <span class="chip">Gherkin AC</span><span class="chip">State Machines</span><span class="chip">UAT Matrix</span>
+          </div>
+        </div>
+        <div class="stack-card">
+          <div style="font-weight:700;font-size:14.5px;">Backend &amp; Data</div>
+          <div class="tag-wrap">
+            <span class="chip">SQL (CTE, Window)</span><span class="chip">Python (Pandas)</span><span class="chip">SQLite</span>
+            <span class="chip">Node.js</span><span class="chip">FastAPI</span><span class="chip">C/C++</span>
+          </div>
+        </div>
+        <div class="stack-card">
+          <div style="font-weight:700;font-size:14.5px;">Design, QA &amp; Workflow</div>
+          <div class="tag-wrap">
+            <span class="chip">Figma</span><span class="chip">Mermaid.js</span><span class="chip">Postman</span>
+            <span class="chip">Jira</span><span class="chip">Airtable</span><span class="chip">Git / GCP</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <span>© Phan Phuc Dat · Semantic HTML/CSS Portfolio</span>
+      <span class="mono">Ho Chi Minh City, Vietnam</span>
+    </footer>
+  </main>
+
+  <script>
+    const STAGES = {
+      "1": {
+        title: "Stage I — E-Wallet Payment Simulator & BABOK Architecture",
+        repo: "https://github.com/phucdatphan/e-wallet-payment-simulator",
+        repoName: "e-wallet-payment-simulator",
+        bullets: [
+          "Authored end-to-end <strong>BABOK BRD/SRS</strong> defining stakeholder concerns, functional boundaries, and order lifecycle state transitions (<code>DRAFT → PENDING → SUCCESS / FAILED / EXPIRED</code>).",
+          "Engineered an isolated Merchant &amp; Payment Gateway Node.js sandbox decoupling untrusted client Redirect URLs from authoritative server-to-server <strong>IPN Webhooks</strong>.",
+          "Implemented canonical payload signing with <strong>HMAC-SHA256</strong>, constant-time signature checks, <strong>Idempotency</strong> anti-replay guards, and inventory reservation locks."
+        ],
+        boxTitle: "Key Architectural Artifacts",
+        artifacts: [
+          { name: "docs/BUSINESS_ANALYSIS.md", desc: "Stakeholder Matrix, FRs & State Machine" },
+          { name: "HMAC & Idempotency Engine", desc: "Anti-tamper & duplicate callback guard" },
+          { name: "Offline Vector QR Sandbox", desc: "Zero-dependency dual-server simulator" }
+        ]
+      },
+      "2": {
+        title: "Stage II — Pre-Launch Checkout UX, Agile Stories & UAT Suite",
+        repo: "https://github.com/phucdatphan/e-wallet-checkout-ux-uat",
+        repoName: "e-wallet-checkout-ux-uat",
+        bullets: [
+          "Designed interactive checkout wireframes in <strong>Figma</strong> covering wallet selection, live QR session states, pending confirmation, and failure recovery.",
+          "Translated technical specs into <strong>Agile User Stories</strong> with strict <code>Given–When–Then</code> Acceptance Criteria, including active status polling fallback during network latency.",
+          "Built a structured <strong>UAT verification suite</strong> and automated <strong>Postman API collection</strong> covering happy paths, expired sessions, invalid signatures, and edge-case errors."
+        ],
+        boxTitle: "Key Pre-Launch Deliverables",
+        artifacts: [
+          { name: "wireframes/ & Figma Flows", desc: "End-to-end user checkout experience" },
+          { name: "user-stories-ac.md", desc: "Gherkin Given–When–Then specifications" },
+          { name: "uat-test-cases.csv & Postman", desc: "Functional & security edge-case suite" }
+        ]
+      },
+      "3": {
+        title: "Stage III — Post-Launch Funnel, Settlement Recon & Fraud BI",
+        repo: "https://github.com/phucdatphan/e-wallet-post-launch-analytics",
+        repoName: "e-wallet-post-launch-analytics",
+        bullets: [
+          "Modeled post-launch operational warehouse tables in SQLite and wrote analytical queries using <strong>SQL CTEs &amp; Window Functions</strong> to diagnose checkout funnel drop-offs.",
+          "Designed multi-party financial reconciliation logic comparing <strong>Merchant Orders, Gateway Logs, and Bank Settlements</strong> to isolate amount mismatches and missing callbacks.",
+          "Conducted exploratory anomaly analysis on real-world card transaction data in Python to formulate rule-based <strong>card-testing and off-peak fraud</strong> safeguards."
+        ],
+        boxTitle: "Key Data & BI Deliverables",
+        artifacts: [
+          { name: "analytics_queries.sql", desc: "Funnel & multi-party reconciliation SQL" },
+          { name: "eda_creditcard.py", desc: "Real-world payment anomaly & fraud EDA" },
+          { name: "Executive BI Dashboard", desc: "Product iteration & risk rule backlog" }
+        ]
+      }
+    };
+
+    function renderStage(id) {
+      const s = STAGES[id];
+      const itemsHtml = s.artifacts.map(a => `
+        <div class="artifact-item">
+          <div class="mono" style="font-weight:700;font-size:12px;color:var(--text);">${a.name}</div>
+          <div style="font-size:12px;color:var(--subtle);margin-top:2px;">${a.desc}</div>
+        </div>
+      `).join("");
+      document.getElementById("stageContent").innerHTML = `
+        <div class="stage-header">
+          <div class="stage-title">${s.title}</div>
+          <a class="repo-btn mono" href="${s.repo}" target="_blank" rel="noreferrer">🐙 ${s.repoName} ↗</a>
+        </div>
+        <div class="two-col">
+          <ul class="clean-list">${s.bullets.map(x => `<li>${x}</li>`).join("")}</ul>
+          <div class="artifact-box">
+            <div class="mono" style="font-size:11.5px;font-weight:700;color:var(--subtle);text-transform:uppercase;">${s.boxTitle}</div>
+            ${itemsHtml}
+          </div>
+        </div>
+      `;
+    }
+
+    document.querySelectorAll(".stage-tab").forEach(btn => {
+      btn.addEventListener("click", () => {
+        document.querySelectorAll(".stage-tab").forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+        renderStage(btn.dataset.stage);
+      });
+    });
+    renderStage("1");
+
+    const toggle = document.getElementById("themeToggle");
+    toggle.addEventListener("click", () => {
+      const html = document.documentElement;
+      const next = html.dataset.theme === "dark" ? "light" : "dark";
+      html.dataset.theme = next;
+      toggle.textContent = next === "dark" ? "☀️ Light" : "🌙 Dark";
+    });
+  </script>
+</body>
+</html>
