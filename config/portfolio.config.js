@@ -2,211 +2,400 @@ window.PORTFOLIO_CONFIG = {
   site: {
     name: "Phan Phuc Dat",
     shortName: "Phan Phuc Dat",
-    role: "IT Business Analyst & System Architecture · UEH",
-    footerRole: "IT Business Analyst · Digital Transformation & FinTech · UEH",
-    location: "Ho Chi Minh City, Vietnam",
+    role: {
+      en: "IT Business Analyst & System Architecture · UEH",
+      vi: "Phân Tích Nghiệp Vụ CNTT (ITBA) & Kiến Trúc Hệ Thống · UEH"
+    },
+    footerRole: {
+      en: "IT Business Analyst · Digital Transformation & FinTech · UEH",
+      vi: "IT Business Analyst · Chuyển Đổi Số & Hệ Thống FinTech · UEH"
+    },
+    location: {
+      en: "Ho Chi Minh City, Vietnam",
+      vi: "TP. Hồ Chí Minh, Việt Nam"
+    },
     copyrightYear: "2026",
     email: "phucdat.work@gmail.com",
-    profileImage: "assets/avatar.svg",
+    profileImage: "assets/profile.jpg",
     webIcon: "assets/favicon.svg"
   },
 
   navigation: [
-    { key: "about", label: "About", href: "index.html" },
-    { key: "practice", label: "Practice", href: "practice.html" },
-    { key: "works", label: "Works", href: "works.html" },
-    { key: "notes", label: "Notes", href: "notes.html" },
-    { key: "stack", label: "Stack", href: "stack.html" }
+    { key: "about", label: { en: "About", vi: "Giới thiệu" }, href: "index.html" },
+    { key: "practice", label: { en: "Practice", vi: "Phương pháp" }, href: "practice.html" },
+    { key: "works", label: { en: "Works", vi: "Dự án" }, href: "works.html" },
+    { key: "notes", label: { en: "Notes", vi: "Ghi chép" }, href: "notes.html" },
+    { key: "stack", label: { en: "Stack", vi: "Công cụ" }, href: "stack.html" }
   ],
 
   profiles: [
     {
-      label: "GitHub",
+      label: { en: "GitHub", vi: "GitHub" },
       value: "@phucdatphan",
       href: "https://github.com/phucdatphan"
     },
     {
-      label: "LinkedIn",
+      label: { en: "LinkedIn", vi: "LinkedIn" },
       value: "phucdatphan",
       href: "https://linkedin.com/in/phucdatphan"
     },
     {
-      label: "Alma Mater",
+      label: { en: "Alma Mater", vi: "Đơn vị đào tạo" },
       value: "UEH · Innovation & Tech",
-      href: "https://www.ueh.edu.vn"
+      href: "https://uii.ueh.edu.vn"
     }
   ],
 
   pages: {
     about: {
-      metaTitle: "Phan Phuc Dat — IT Business Analyst & System Architecture",
-      metaDescription: "Portfolio of Phan Phuc Dat — IT Business Analyst, Digital Transformation, and FinTech System Architecture.",
-      overline: "About",
-      greeting: "Hi there.",
-      introduction: [
-        "I am an Innovation and Technology graduate from the **University of Economics Ho Chi Minh City (UEH)**, based in Vietnam.",
-        "My work sits at the intersection of [specification-driven business analysis](practice.html), FinTech payment workflows, and relational data diagnostics. Rather than treating business documentation and software engineering as separate silos, I pair BABOK-aligned specifications directly with working prototypes and analytical SQL pipelines.",
-        "This website is a quiet record of the [system architectures](works.html) I build, the [methods and tools](stack.html) I rely on, and the [field notes](notes.html) I write along the way."
-      ],
-      introductionLinks: [
-        { label: "Explore system works", href: "works.html" },
-        { label: "Read field notes", href: "notes.html" }
-      ],
-      nowTitle: "Now",
-      now: [
-        {
-          label: "Focus",
-          text: "IT Business Analysis, **Enterprise Digital Transformation**, and FinTech payment workflows."
-        },
-        {
-          label: "Architecture",
-          text: "Modeling webhook-driven checkout lifecycles, state transition contracts, and idempotent payment guards."
-        },
-        {
-          label: "Diagnostics",
-          text: "Auditing multi-party settlement ledgers, conversion funnels, and payment anomaly rules in **SQL & Python**."
-        },
-        {
-          label: "Open",
-          text: "Conversations around IT Business Analysis, Product Systems, and FinTech engineering in Vietnam."
-        }
-      ],
-      exploreTitle: "Explore",
-      explore: "Read my [practice & working methodology](practice.html), inspect the [end-to-end E-Wallet system case studies](works.html), browse the [technical & BA stack](stack.html), or read bilingual [engineering & BA field notes](notes.html).",
-      reachTitle: "Reach me through",
-      reachLinks: [
-        { label: "Email", href: "mailto:phucdat.work@gmail.com" },
-        { label: "LinkedIn", href: "https://linkedin.com/in/phucdatphan", external: true },
-        { label: "GitHub", href: "https://github.com/phucdatphan", external: true }
-      ]
+      en: {
+        metaTitle: "Phan Phuc Dat — IT Business Analyst & System Architecture",
+        metaDescription: "Portfolio of Phan Phuc Dat — IT Business Analyst, Digital Transformation, and FinTech System Architecture.",
+        overline: "About",
+        greeting: "Hi there.",
+        introduction: [
+          "I am an Innovation and Technology graduate from the **University of Economics Ho Chi Minh City (UEH)**, based in Vietnam.",
+          "My work sits at the intersection of [specification-driven business analysis](practice.html), FinTech payment workflows, and relational data diagnostics. Rather than treating business documentation and software engineering as separate silos, I pair BABOK-aligned specifications directly with working prototypes and analytical SQL pipelines.",
+          "This website is a quiet record of the [system architectures](works.html) I build, the [methods and tools](stack.html) I rely on, and the [field notes](notes.html) I write along the way."
+        ],
+        introductionLinks: [
+          { label: "Explore system works", href: "works.html" },
+          { label: "Read field notes", href: "notes.html" }
+        ],
+        nowTitle: "Now",
+        now: [
+          {
+            label: "Focus",
+            text: "IT Business Analysis, **Enterprise Digital Transformation**, and FinTech payment workflows."
+          },
+          {
+            label: "Architecture",
+            text: "Modeling webhook-driven checkout lifecycles, state transition contracts, and idempotent payment guards."
+          },
+          {
+            label: "Diagnostics",
+            text: "Auditing multi-party settlement ledgers, conversion funnels, and payment anomaly rules in **SQL & Python**."
+          },
+          {
+            label: "Open",
+            text: "Conversations around IT Business Analysis, Product Systems, and FinTech engineering in Vietnam."
+          }
+        ],
+        exploreTitle: "Explore",
+        explore: "Read my [practice & working methodology](practice.html), inspect the [end-to-end E-Wallet system case studies](works.html), browse the [technical & BA stack](stack.html), or read bilingual [engineering & BA field notes](notes.html).",
+        reachTitle: "Reach me through",
+        reachLinks: [
+          { label: "Email", href: "mailto:phucdat.work@gmail.com" },
+          { label: "LinkedIn", href: "https://linkedin.com/in/phucdatphan", external: true },
+          { label: "GitHub", href: "https://github.com/phucdatphan", external: true }
+        ]
+      },
+      vi: {
+        metaTitle: "Phan Phúc Đạt — IT Business Analyst & Kiến Trúc Hệ Thống",
+        metaDescription: "Hồ sơ năng lực của Phan Phúc Đạt — Phân tích nghiệp vụ CNTT (ITBA), Chuyển đổi số và Kiến trúc hệ thống FinTech.",
+        overline: "Giới thiệu",
+        greeting: "Xin chào.",
+        introduction: [
+          "Tôi tốt nghiệp ngành Công nghệ và Đổi mới sáng tạo tại **Đại học Kinh tế TP. Hồ Chí Minh (UEH)**.",
+          "Công việc của tôi nằm ở giao điểm giữa [phân tích nghiệp vụ hướng đặc tả](practice.html), luồng thanh toán FinTech và chẩn đoán dữ liệu quan hệ. Thay vì tách rời tài liệu nghiệp vụ khỏi kỹ thuật phần mềm, tôi kết hợp đặc tả chuẩn BABOK trực tiếp với các bản mẫu hệ thống chạy thực tế và truy vấn phân tích SQL.",
+          "Trang web này là nơi lưu giữ có hệ thống các [kiến trúc dự án](works.html) tôi xây dựng, [phương pháp và bộ công cụ](stack.html) tôi sử dụng, cùng những [ghi chép chuyên môn](notes.html) đúc kết trong quá trình làm việc."
+        ],
+        introductionLinks: [
+          { label: "Xem hồ sơ các dự án", href: "works.html" },
+          { label: "Đọc ghi chép chuyên môn", href: "notes.html" }
+        ],
+        nowTitle: "Hiện tại",
+        now: [
+          {
+            label: "Trọng tâm",
+            text: "Phân tích nghiệp vụ CNTT (ITBA), **Chuyển đổi số doanh nghiệp** và kiến trúc luồng thanh toán FinTech."
+          },
+          {
+            label: "Kiến trúc",
+            text: "Mô hình hóa vòng đời thanh toán bất đồng bộ (Webhook/IPN), máy trạng thái đơn hàng và cơ chế chống xử lý trùng (Idempotency)."
+          },
+          {
+            label: "Dữ liệu",
+            text: "Kiểm toán sổ cái đối soát đa bên, phân tích phễu chuyển đổi và thiết kế quy tắc phát hiện giao dịch bất thường bằng **SQL & Python**."
+          },
+          {
+            label: "Kết nối",
+            text: "Sẵn sàng trao đổi về cơ hội hợp tác trong mảng IT Business Analysis, Product Systems và FinTech tại Việt Nam."
+          }
+        ],
+        exploreTitle: "Khám phá",
+        explore: "Tìm hiểu [phương pháp làm việc & tư duy đặc tả](practice.html), xem chi tiết [chuỗi dự án hệ thống Ví điện tử](works.html), danh mục [kỹ năng & công cụ](stack.html) hoặc đọc các [bài viết phân tích song ngữ](notes.html).",
+        reachTitle: "Liên hệ trực tiếp",
+        reachLinks: [
+          { label: "Email", href: "mailto:phucdat.work@gmail.com" },
+          { label: "LinkedIn", href: "https://linkedin.com/in/phucdatphan", external: true },
+          { label: "GitHub", href: "https://github.com/phucdatphan", external: true }
+        ]
+      }
     },
 
     practice: {
-      metaTitle: "Practice & Methodology — Phan Phuc Dat",
-      metaDescription: "Core IT Business Analysis directions, FinTech system invariants, and analytical methodology.",
-      overline: "Practice",
-      title: "Specification-driven business analysis & deterministic system design.",
-      description: "Good specifications eliminate ambiguity before code is written; good data diagnostics close the loop after launch. My practice connects both ends of the software lifecycle.",
-      listTitle: "Core directions",
-      directions: [
-        {
-          number: "I",
-          title: "Specification & Domain Modeling",
-          question: "How do we translate ambiguous stakeholder requirements into deterministic engineering contracts?",
-          detail: "Applying BABOK frameworks to structure stakeholder matrices, Business & Software Requirements Specifications (BRD/SRS), explicit order state machines, and Gherkin (Given-When-Then) acceptance criteria."
-        },
-        {
-          number: "II",
-          title: "Payment & Webhook Reliability",
-          question: "What architectural invariants prevent lost orders, payload tampering, or duplicate fulfillment?",
-          detail: "Decoupling untrusted browser Redirect URLs from authoritative server-to-server IPN callbacks, backed by canonical HMAC-SHA256 verification, constant-time checks, inventory locks, and idempotency guards."
-        },
-        {
-          number: "III",
-          title: "Settlement Reconciliation & Risk BI",
-          question: "How do post-launch SQL diagnostics uncover silent financial drift and inform product UX?",
-          detail: "Writing relational SQL pipelines (CTEs, Window Functions) and Python anomaly models to reconcile Merchant, Gateway, and Bank ledgers while isolating checkout friction and card-testing patterns."
-        }
-      ],
-      worksTitle: "Flagship System Initiative",
-      methodTitle: "Working method",
-      method: [
-        "Every case study begins from first principles: mapping every actor's incentives and failure modes before drawing a single wireframe or endpoint.",
-        "Whenever possible, I validate specifications by building zero-dependency sandboxes, executable Postman suites, and reproducible SQLite warehouses so edge cases are observed rather than assumed."
-      ],
-      methodLinks: [
-        { label: "Browse all system stages", href: "works.html" },
-        { label: "View GitHub profile", href: "https://github.com/phucdatphan", external: true }
-      ]
+      en: {
+        metaTitle: "Practice & Methodology — Phan Phuc Dat",
+        metaDescription: "Core IT Business Analysis directions, FinTech system invariants, and analytical methodology.",
+        overline: "Practice",
+        title: "Specification-driven business analysis & deterministic system design.",
+        description: "Good specifications eliminate ambiguity before code is written; good data diagnostics close the loop after launch. My practice connects both ends of the software lifecycle.",
+        listTitle: "Core directions",
+        directions: [
+          {
+            number: "I",
+            title: "Specification & Domain Modeling",
+            question: "How do we translate ambiguous stakeholder requirements into deterministic engineering contracts?",
+            detail: "Applying BABOK frameworks to structure stakeholder matrices, Business & Software Requirements Specifications (BRD/SRS), explicit order state machines, and Gherkin (Given-When-Then) acceptance criteria."
+          },
+          {
+            number: "II",
+            title: "Payment & Webhook Reliability",
+            question: "What architectural invariants prevent lost orders, payload tampering, or duplicate fulfillment?",
+            detail: "Decoupling untrusted browser Redirect URLs from authoritative server-to-server IPN callbacks, backed by canonical HMAC-SHA256 verification, constant-time checks, inventory locks, and idempotency guards."
+          },
+          {
+            number: "III",
+            title: "Settlement Reconciliation & Risk BI",
+            question: "How do post-launch SQL diagnostics uncover silent financial drift and inform product UX?",
+            detail: "Writing relational SQL pipelines (CTEs, Window Functions) and Python anomaly models to reconcile Merchant, Gateway, and Bank ledgers while isolating checkout friction and card-testing patterns."
+          }
+        ],
+        worksTitle: "Flagship System Initiative",
+        methodTitle: "Working method",
+        method: [
+          "Every case study begins from first principles: mapping every actor's incentives and failure modes before drawing a single wireframe or endpoint.",
+          "Whenever possible, I validate specifications by building zero-dependency sandboxes, executable Postman suites, and reproducible SQLite warehouses so edge cases are observed rather than assumed."
+        ],
+        methodLinks: [
+          { label: "Browse all system stages", href: "works.html" },
+          { label: "View GitHub profile", href: "https://github.com/phucdatphan", external: true }
+        ]
+      },
+      vi: {
+        metaTitle: "Phương Pháp & Tư Duy Hệ Thống — Phan Phúc Đạt",
+        metaDescription: "Các hướng tiếp cận cốt lõi trong Phân tích nghiệp vụ CNTT, thiết kế hệ thống thanh toán và phân tích dữ liệu đối soát.",
+        overline: "Phương pháp",
+        title: "Phân tích nghiệp vụ hướng đặc tả & thiết kế hệ thống tất định.",
+        description: "Một bản đặc tả tốt triệt tiêu sự mơ hồ trước khi viết dòng code đầu tiên; một hệ thống chẩn đoán dữ liệu tốt khép kín vòng lặp cải tiến sau khi sản phẩm ra mắt. Phương pháp của tôi kết nối chặt chẽ cả hai đầu vòng đời đó.",
+        listTitle: "Ba trụ cột chuyên môn",
+        directions: [
+          {
+            number: "I",
+            title: "Đặc Tả Nghiệp Vụ & Mô Hình Hóa Miền",
+            question: "Làm thế nào chuyển hóa yêu cầu đa chiều từ các bên liên quan thành bản hợp đồng kỹ thuật không mơ hồ?",
+            detail: "Ứng dụng khung chuẩn BABOK để xây dựng ma trận Stakeholder, tài liệu BRD/SRS, máy trạng thái (State Machine) tường minh và tiêu chí nghiệm thu Gherkin (Given-When-Then) có thể kiểm thử trực tiếp."
+          },
+          {
+            number: "II",
+            title: "Độ Tin Cậy Thanh Toán & Webhook Bất Đồng Bộ",
+            question: "Những chốt chặn kiến trúc nào giúp ngăn chặn mất đơn, giả mạo gói tin hoặc xuất kho trùng lặp?",
+            detail: "Tách biệt hoàn toàn luồng chuyển hướng trình duyệt (Redirect URL) khỏi luồng gọi ngầm giữa hai máy chủ (IPN Webhook), kết hợp chữ ký chuẩn hóa HMAC-SHA256, chống Timing Attack, khóa tồn kho tạm thời và khóa lũy thừa Idempotency."
+          },
+          {
+            number: "III",
+            title: "Đối Soát Quyết Toán & Phân Tích Rủi Ro",
+            question: "Làm sao dùng truy vấn SQL sau ra mắt để phát hiện sai lệch dòng tiền ngầm và dẫn dắt cải tiến UX?",
+            detail: "Thiết kế truy vấn SQL nâng cao (CTE, Window Functions) và kịch bản Python EDA để đối chiếu ba bên giữa Sổ đơn hàng, Log cổng ví và Sao kê ngân hàng, đồng thời bóc tách điểm nghẽn phễu thanh toán."
+          }
+        ],
+        worksTitle: "Dự Án Hệ Thống Trọng Điểm",
+        methodTitle: "Nguyên tắc thực thi",
+        method: [
+          "Mọi nghiên cứu tình huống đều bắt đầu từ gốc rễ: lập bản đồ quyền lợi, rủi ro và kịch bản lỗi biên của từng tác nhân trước khi vẽ wireframe hay thiết kế API.",
+          "Thay vì chỉ dừng ở tài liệu lý thuyết, tôi kiểm chứng đặc tả bằng cách dựng môi trường sandbox chạy thực tế, bộ kiểm thử tự động trên Postman và kho dữ liệu SQLite tái lập được."
+        ],
+        methodLinks: [
+          { label: "Xem toàn bộ các giai đoạn dự án", href: "works.html" },
+          { label: "Xem hồ sơ GitHub", href: "https://github.com/phucdatphan", external: true }
+        ]
+      }
     },
 
     works: {
-      metaTitle: "System Works — Phan Phuc Dat",
-      metaDescription: "End-to-End E-Wallet Payment System architecture, UX/UAT verification, and post-launch SQL reconciliation.",
-      overline: "Works",
-      title: "Selected system architectures & case studies.",
-      description: "A connected multi-stage FinTech payment suite progressing from core backend architecture and BABOK specs through UX/UAT quality gates to post-launch SQL settlement reconciliation."
+      en: {
+        metaTitle: "System Works — Phan Phuc Dat",
+        metaDescription: "End-to-End E-Wallet Payment System architecture, UX/UAT verification, and post-launch SQL reconciliation.",
+        overline: "Works",
+        title: "Selected system architectures & case studies.",
+        description: "A connected multi-stage FinTech payment suite progressing from core backend architecture and BABOK specs through UX/UAT quality gates to post-launch SQL settlement reconciliation.",
+        filters: {
+          all: "All Stages",
+          architecture: "Architecture & Spec",
+          "ux-uat": "Checkout UX & UAT",
+          analytics: "SQL & Risk BI"
+        }
+      },
+      vi: {
+        metaTitle: "Dự Án Hệ Thống — Phan Phúc Đạt",
+        metaDescription: "Chuỗi dự án Hệ thống Thanh toán Ví điện tử đầu-cuối: Kiến trúc lõi BABOK, Thiết kế UX/UAT và Phân tích đối soát SQL.",
+        overline: "Dự án",
+        title: "Các kiến trúc hệ thống & nghiên cứu tình huống chọn lọc.",
+        description: "Chuỗi dự án FinTech liên hoàn xuyên suốt vòng đời sản phẩm: từ đặc tả kiến trúc lõi & bảo mật (Stage I), thiết kế luồng UX & kiểm thử nghiệm thu UAT (Stage II) đến phân tích dữ liệu phễu & đối soát tài chính ba bên sau ra mắt (Stage III).",
+        filters: {
+          all: "Tất cả giai đoạn",
+          architecture: "Kiến trúc & Đặc tả",
+          "ux-uat": "Checkout UX & UAT",
+          analytics: "Đối soát SQL & BI"
+        }
+      }
     },
 
     notes: {
-      metaTitle: "Field Notes — Phan Phuc Dat",
-      metaDescription: "Bilingual notes on IT Business Analysis, FinTech payment architecture, and financial reconciliation.",
-      overline: "Field Notes",
-      title: "Notes on specifications, payment invariants, and data.",
-      description: "Short essays and architectural breakdowns written in both English and Vietnamese."
+      en: {
+        metaTitle: "Field Notes — Phan Phuc Dat",
+        metaDescription: "Bilingual notes on IT Business Analysis, FinTech payment architecture, and financial reconciliation.",
+        overline: "Field Notes",
+        title: "Notes on specifications, payment invariants, and data.",
+        description: "Short essays and architectural breakdowns available in English and Vietnamese.",
+        archiveTitle: "Archive"
+      },
+      vi: {
+        metaTitle: "Ghi Chép Chuyên Môn — Phan Phúc Đạt",
+        metaDescription: "Các bài viết phân tích về IT Business Analysis, kiến trúc cổng thanh toán FinTech và đối soát dữ liệu tài chính.",
+        overline: "Ghi chép",
+        title: "Góc nhìn về đặc tả nghiệp vụ, kiến trúc thanh toán và dữ liệu.",
+        description: "Các bài phân tích ngắn đúc kết từ quá trình thiết kế hệ thống và kiểm thử thực tế.",
+        archiveTitle: "Danh mục bài viết"
+      }
     },
 
     stack: {
-      metaTitle: "Stack & Tooling — Phan Phuc Dat",
-      metaDescription: "Business analysis frameworks, backend prototyping languages, analytical SQL, and product tooling.",
-      overline: "Stack",
-      title: "Methods, languages, and working tools.",
-      description: "A curated set of analysis standards, query languages, and engineering tools used across my system specifications and prototypes.",
-      categories: [
-        {
-          code: "BA · Specs",
-          title: "Business Analysis & Domain Modeling",
-          description: "Frameworks and notations for eliciting requirements, mapping workflows, and defining unambiguous state transitions.",
-          items: ["BABOK", "BRD / SRS", "Agile / Scrum", "Gherkin (Given-When-Then)", "State Machines", "BPMN Workflows", "Stakeholder Matrix"]
-        },
-        {
-          code: "Data · SQL",
-          title: "Relational Diagnostics & Analytics",
-          description: "Querying multi-table operational warehouses, modeling conversion funnels, and auditing financial settlements.",
-          items: ["SQL (CTEs & Window Functions)", "SQLite", "Python", "Pandas", "NumPy", "Matplotlib", "Anomaly & Funnel EDA"]
-        },
-        {
-          code: "Core · Dev",
-          title: "Backend Prototyping & API Architecture",
-          description: "Building lightweight, deterministic sandboxes to validate webhook lifecycles, cryptographic signatures, and idempotency.",
-          items: ["Node.js", "FastAPI", "HMAC-SHA256", "REST Webhooks / IPN", "C / C++", "HTML / CSS", "JavaScript"]
-        },
-        {
-          code: "UX · QA",
-          title: "Interface Design, Verification & Collaboration",
-          description: "Wireframing interactive user journeys, executing UAT suites, and maintaining traceable engineering documentation.",
-          items: ["Figma", "Mermaid.js", "Postman", "UAT Test Matrix", "Jira", "Airtable", "Notion", "Git & GitHub", "Google Cloud Platform", "VS Code"]
-        }
-      ]
+      en: {
+        metaTitle: "Stack & Tooling — Phan Phuc Dat",
+        metaDescription: "Business analysis frameworks, backend prototyping languages, analytical SQL, and product tooling.",
+        overline: "Stack",
+        title: "Methods, languages, and working tools.",
+        description: "A curated set of analysis standards, query languages, and engineering tools used across my system specifications and prototypes.",
+        sectionTitle: "Domains & Tooling",
+        categories: [
+          {
+            code: "BA · Specs",
+            title: "Business Analysis & Domain Modeling",
+            description: "Frameworks and notations for eliciting requirements, mapping workflows, and defining unambiguous state transitions.",
+            items: ["BABOK", "BRD / SRS", "Agile / Scrum", "Gherkin (Given-When-Then)", "State Machines", "BPMN Workflows", "Stakeholder Matrix"]
+          },
+          {
+            code: "Data · SQL",
+            title: "Relational Diagnostics & Analytics",
+            description: "Querying multi-table operational warehouses, modeling conversion funnels, and auditing financial settlements.",
+            items: ["SQL (CTEs & Window Functions)", "SQLite", "Python", "Pandas", "NumPy", "Matplotlib", "Anomaly & Funnel EDA"]
+          },
+          {
+            code: "Core · Dev",
+            title: "Backend Prototyping & API Architecture",
+            description: "Building lightweight, deterministic sandboxes to validate webhook lifecycles, cryptographic signatures, and idempotency.",
+            items: ["Node.js", "FastAPI", "HMAC-SHA256", "REST Webhooks / IPN", "C / C++", "HTML / CSS", "JavaScript"]
+          },
+          {
+            code: "UX · QA",
+            title: "Interface Design, Verification & Collaboration",
+            description: "Wireframing interactive user journeys, executing UAT suites, and maintaining traceable engineering documentation.",
+            items: ["Figma", "Mermaid.js", "Postman", "UAT Test Matrix", "Jira", "Airtable", "Notion", "Git & GitHub", "Google Cloud Platform", "VS Code"]
+          }
+        ]
+      },
+      vi: {
+        metaTitle: "Phương Pháp & Công Cụ — Phan Phúc Đạt",
+        metaDescription: "Khung phân tích nghiệp vụ BABOK, truy vấn SQL phân tích, ngôn ngữ lập trình mẫu và công cụ thiết kế kiểm thử.",
+        overline: "Công cụ",
+        title: "Phương pháp luận, ngôn ngữ truy vấn và bộ công cụ thực thi.",
+        description: "Tập hợp các tiêu chuẩn phân tích nghiệp vụ, ngôn ngữ dữ liệu và công cụ kỹ thuật tôi sử dụng trực tiếp trong các hồ sơ hệ thống.",
+        sectionTitle: "Nhóm Năng Lực & Công Cụ",
+        categories: [
+          {
+            code: "BA · Đặc tả",
+            title: "Phân Tích Nghiệp Vụ & Mô Hình Hóa Quy Trình",
+            description: "Các khung chuẩn và ký hiệu dùng để khai thác yêu cầu, phân tích luồng As-Is / To-Be và định nghĩa máy trạng thái chặt chẽ.",
+            items: ["BABOK", "BRD / SRS", "Agile / Scrum", "Gherkin (Given-When-Then)", "State Machines", "BPMN Workflows", "Stakeholder Matrix"]
+          },
+          {
+            code: "Dữ liệu · SQL",
+            title: "Truy Vấn Dữ Liệu Quan Hệ & Phân Tích Chẩn Đoán",
+            description: "Khai thác kho dữ liệu đa bảng, đo lường phễu chuyển đổi, đối soát tài chính ba bên và phân tích quy luật bất thường.",
+            items: ["SQL (CTEs & Window Functions)", "SQLite", "Python", "Pandas", "NumPy", "Matplotlib", "Phân tích Phễu & Gian lận"]
+          },
+          {
+            code: "Lõi · Backend",
+            title: "Xây Dựng Bản Mẫu Kỹ Thuật & Kiến Trúc API",
+            description: "Phát triển các môi trường giả lập độc lập để kiểm chứng luồng Webhook/IPN, bảo mật chữ ký số và khóa chống trùng lặp.",
+            items: ["Node.js", "FastAPI", "HMAC-SHA256", "REST Webhooks / IPN", "C / C++", "HTML / CSS", "JavaScript"]
+          },
+          {
+            code: "UX · Kiểm thử",
+            title: "Thiết Kế Giao Diện, Nghiệm Thu UAT & Quản Trị Dự Án",
+            description: "Thiết kế wireframe tương tác, xây dựng kịch bản kiểm thử API/UAT và quản lý tài liệu sản phẩm xuyên suốt các sprint.",
+            items: ["Figma", "Mermaid.js", "Postman", "Ma trận UAT", "Jira", "Airtable", "Notion", "Git & GitHub", "Google Cloud Platform", "VS Code"]
+          }
+        ]
+      }
     }
   },
 
   works: [
     {
       id: "stage-1",
-      stage: "Stage I",
       category: "architecture",
-      status: "Core & Security Spec",
       domain: "Node.js · BABOK · FinTech",
-      title: "E-Wallet Payment Simulator & BABOK System Specification",
-      abstract: "Dual-server Merchant and Payment Gateway sandbox paired with full BABOK documentation to model payment state integrity, cryptographic verification, and asynchronous webhook reliability.",
-      mechanism: "Decouples untrusted client Redirect URLs from authoritative server-to-server IPN callbacks, enforcing canonical HMAC-SHA256 signature verification, constant-time checks, inventory reservation locks, and idempotency guards.",
+      codeUrl: "https://github.com/phucdatphan/e-wallet-payment-simulator",
       tags: ["BABOK", "BRD / SRS", "Node.js", "HMAC-SHA256", "Idempotency", "State Machine"],
-      codeUrl: "https://github.com/phucdatphan/e-wallet-payment-simulator"
+      en: {
+        stage: "Stage I",
+        status: "Core & Security Spec",
+        title: "E-Wallet Payment Simulator & BABOK System Specification",
+        abstract: "Dual-server Merchant and Payment Gateway sandbox paired with full BABOK documentation to model payment state integrity, cryptographic verification, and asynchronous webhook reliability.",
+        mechanism: "Decouples untrusted client Redirect URLs from authoritative server-to-server IPN callbacks, enforcing canonical HMAC-SHA256 signature verification, constant-time checks, inventory reservation locks, and idempotency guards."
+      },
+      vi: {
+        stage: "Giai đoạn I",
+        status: "Kiến trúc lõi & Đặc tả bảo mật",
+        title: "Hệ Thống Giả Lập Cổng Thanh Toán Ví Điện Tử & Hồ Sơ Đặc Tả BABOK",
+        abstract: "Môi trường sandbox hai máy chủ độc lập (Merchant & Payment Gateway) đi kèm bộ tài liệu đặc tả chuẩn BABOK nhằm mô hình hóa tính toàn vẹn trạng thái thanh toán, xác thực chữ ký mật mã và xử lý bất đồng bộ.",
+        mechanism: "Tách biệt hoàn toàn Return URL trên trình duyệt khỏi luồng gọi ngầm IPN giữa hai máy chủ; áp dụng chuẩn hóa chuỗi ký HMAC-SHA256, so sánh thời gian hằng số, khóa giữ tồn kho và cơ chế lũy thừa Idempotency chống xử lý trùng."
+      }
     },
     {
       id: "stage-2",
-      stage: "Stage II",
       category: "ux-uat",
-      status: "Checkout UX & UAT",
       domain: "Figma · Agile · Postman",
-      title: "Pre-Launch Checkout UX, Gherkin Stories & UAT Verification Suite",
-      abstract: "Translates core payment specifications into interactive checkout wireframes, developer-ready Agile user stories with Given-When-Then criteria, and an end-to-end UAT & Postman regression suite.",
-      mechanism: "Introduces active status-polling fallback (/pay/query) during gateway webhook latency so end users experience calm, deterministic checkout feedback without relaxing backend security.",
+      codeUrl: "https://github.com/phucdatphan/e-wallet-checkout-ux-uat",
       tags: ["Figma Wireframes", "Agile / Scrum", "Gherkin AC", "UAT Matrix", "Postman", "Active Polling"],
-      codeUrl: "https://github.com/phucdatphan/e-wallet-checkout-ux-uat"
+      en: {
+        stage: "Stage II",
+        status: "Checkout UX & UAT",
+        title: "Pre-Launch Checkout UX, Gherkin Stories & UAT Verification Suite",
+        abstract: "Translates core payment specifications into interactive checkout wireframes, developer-ready Agile user stories with Given-When-Then criteria, and an end-to-end UAT & Postman regression suite.",
+        mechanism: "Introduces active status-polling fallback (/pay/query) during gateway webhook latency so end users experience calm, deterministic checkout feedback without relaxing backend security."
+      },
+      vi: {
+        stage: "Giai đoạn II",
+        status: "Thiết kế UX & Kiểm thử UAT",
+        title: "Thiết Kế Luồng Trải Nghiệm Checkout, User Stories Gherkin & Bộ Nghiệm Thu UAT",
+        abstract: "Chuyển hóa đặc tả kỹ thuật ở Giai đoạn I thành bộ wireframe tương tác trên Figma, danh mục User Stories chuẩn Given-When-Then cho đội phát triển cùng bộ kịch bản kiểm thử UAT và Postman.",
+        mechanism: "Thiết kế cơ chế chủ động truy vấn trạng thái đơn (/pay/query) khi gói tin Webhook IPN bị trễ giờ cao điểm, giúp người dùng nhận phản hồi mượt mà trên giao diện mà không làm giảm tiêu chuẩn bảo mật phía máy chủ."
+      }
     },
     {
       id: "stage-3",
-      stage: "Stage III",
       category: "analytics",
-      status: "Settlement Recon & BI",
       domain: "SQL · Python · Risk Analytics",
-      title: "Post-Launch Checkout Funnel, Multi-Party Reconciliation & Anomaly BI",
-      abstract: "Relational SQLite warehouse and Python diagnostic suite auditing post-launch checkout conversion friction, three-way bank settlement discrepancies, and real-world card fraud patterns.",
-      mechanism: "Cross-joins Merchant Orders, Gateway Transaction Logs, and Bank Settlement statements via SQL CTEs and Window Functions to surface AMOUNT_MISMATCH and MISSING_IPN drift alongside anomaly rules.",
+      codeUrl: "https://github.com/phucdatphan/e-wallet-post-launch-analytics",
       tags: ["SQL CTEs", "Window Functions", "Python", "SQLite", "Settlement Recon", "Anomaly EDA"],
-      codeUrl: "https://github.com/phucdatphan/e-wallet-post-launch-analytics"
+      en: {
+        stage: "Stage III",
+        status: "Settlement Recon & BI",
+        title: "Post-Launch Checkout Funnel, Multi-Party Reconciliation & Anomaly BI",
+        abstract: "Relational SQLite warehouse and Python diagnostic suite auditing post-launch checkout conversion friction, three-way bank settlement discrepancies, and real-world card fraud patterns.",
+        mechanism: "Cross-joins Merchant Orders, Gateway Transaction Logs, and Bank Settlement statements via SQL CTEs and Window Functions to surface AMOUNT_MISMATCH and MISSING_IPN drift alongside anomaly rules."
+      },
+      vi: {
+        stage: "Giai đoạn III",
+        status: "Đối soát quyết toán & Phân tích rủi ro",
+        title: "Phân Tích Phễu Chuyển Đổi Sau Ra Mắt, Đối Soát Ba Bên & Quy Tắc Chống Gian Lận",
+        abstract: "Kho dữ liệu quan hệ SQLite kết hợp bộ truy vấn phân tích SQL và Python EDA nhằm chẩn đoán điểm rơi phễu thanh toán, truy vết sai lệch quyết toán ngân hàng và kiểm thử quy tắc phát hiện giao dịch bất thường.",
+        mechanism: "Kết nối chéo ba nguồn dữ liệu (Đơn hàng Merchant, Nhật ký Cổng ví và Sao kê Ngân hàng) bằng SQL CTE & Window Functions để bóc tách tức thì các ca lệch tiền (AMOUNT_MISMATCH) hoặc thiếu callback (MISSING_IPN)."
+      }
     }
   ],
 
@@ -258,7 +447,7 @@ window.PORTFOLIO_CONFIG = {
         ]
       },
       vi: {
-        overline: "Hồ Sơ Hệ Thống · Stage I",
+        overline: "Hồ Sơ Hệ Thống · Giai Đoạn I",
         title: "Giả Lập Cổng Thanh Toán Ví Điện Tử & Đặc Tả BABOK",
         lead: "Xây dựng môi trường sandbox hai chiều giữa Merchant và Payment Gateway kèm hồ sơ đặc tả BABOK nhằm đảm bảo tính toàn vẹn trạng thái đơn hàng trước lỗi mạng, tấn công giả mạo và gọi lặp Webhook.",
         meta: "Kiến Trúc & Bảo Mật · Node.js & BABOK",
@@ -342,7 +531,7 @@ window.PORTFOLIO_CONFIG = {
         ]
       },
       vi: {
-        overline: "Hồ Sơ Hệ Thống · Stage II",
+        overline: "Hồ Sơ Hệ Thống · Giai Đoạn II",
         title: "Thiết Kế Trải Nghiệm Checkout, User Stories & Bộ Kiểm Thử UAT",
         lead: "Chuyển hóa kiến trúc lõi thành luồng giao diện thân thiện trên Figma, tài liệu Given-When-Then rõ ràng cho lập trình viên và bộ kịch bản nghiệm thu UAT trước giờ vận hành.",
         meta: "UX & Kiểm Thử Nghiệm Thu · Figma & Postman",
@@ -429,7 +618,7 @@ SELECT * FROM recon_audit WHERE recon_flag <> 'MATCHED';`
         ]
       },
       vi: {
-        overline: "Hồ Sơ Hệ Thống · Stage III",
+        overline: "Hồ Sơ Hệ Thống · Giai Đoạn III",
         title: "Phân Tích Phễu Sau Ra Mắt, Đối Soát Ba Bên & Phát Hiện Bất Thường",
         lead: "Đo lường sức khỏe vận hành của hệ thống thanh toán bằng SQL (CTE, Window Functions), đối soát tài chính ba bên và phân tích quy luật giao dịch bất thường bằng Python.",
         meta: "Phân Tích SQL & Python · Đối Soát Tài Chính",
@@ -482,7 +671,7 @@ SELECT * FROM recon_audit WHERE recon_flag <> 'MATCHED';`
     {
       id: "redirect-vs-ipn",
       number: "01",
-      category: "Payment Architecture",
+      category: { en: "Payment Architecture", vi: "Kiến Trúc Thanh Toán" },
       en: {
         title: "Why Browser Redirect URLs Cannot Finalize Payment State",
         summary: "Separating user-facing browser navigation from authoritative server-to-server webhook settlement in E-Wallet integrations.",
@@ -507,7 +696,7 @@ SELECT * FROM recon_audit WHERE recon_flag <> 'MATCHED';`
     {
       id: "gherkin-for-async-systems",
       number: "02",
-      category: "Business Analysis",
+      category: { en: "Business Analysis", vi: "Phân Tích Nghiệp Vụ" },
       en: {
         title: "Writing Deterministic Given-When-Then Criteria for Async Workflows",
         summary: "How structured Gherkin scenarios bridge business analysts, frontend designers, backend engineers, and QA testers.",
@@ -532,7 +721,7 @@ SELECT * FROM recon_audit WHERE recon_flag <> 'MATCHED';`
     {
       id: "three-way-reconciliation",
       number: "03",
-      category: "Data & Finance",
+      category: { en: "Data & Finance", vi: "Dữ Liệu & Đối Soát" },
       en: {
         title: "Multi-Party Financial Settlement Reconciliation from First Principles",
         summary: "Structuring SQL audits across Merchant databases, Gateway logs, and Bank settlement statements.",

@@ -33,9 +33,18 @@
   }
 
   function setLang(lang) {
+    const normalized = lang === "vi" ? "vi" : "en";
+    root.lang = normalized;
     try {
-      localStorage.setItem("portfolio-lang", lang);
+      localStorage.setItem("portfolio-lang", normalized);
     } catch (_) {}
+  }
+
+  function pick(val, lang) {
+    if (val && typeof val === "object" && !Array.isArray(val)) {
+      return val[lang] ?? val.en ?? "";
+    }
+    return val ?? "";
   }
 
   function renderLinks(links) {
@@ -63,31 +72,36 @@
   }
 
   function renderWorkCards(items) {
+    const lang = getLang();
     return items
       .map((work, idx) => {
+        const loc = work[lang] || work.en || work;
         const tags = (work.tags || [])
           .map((t) => `<span class="tag-badge">${escapeHTML(t)}</span>`)
           .join("");
+        const mechLabel = lang === "vi" ? "Cơ chế cốt lõi" : "Core Mechanism";
+        const dossierLabel = lang === "vi" ? "Hồ sơ hệ thống" : "System Dossier";
+        const codeLabel = lang === "vi" ? "Mã nguồn" : "Source Code";
         return `
           <article class="research-work-card reveal" style="--d:${idx * 60}ms" data-category="${escapeHTML(work.category)}">
             <div class="research-work-meta">
-              <span class="research-status">${escapeHTML(work.stage)} · ${escapeHTML(work.status)}</span>
+              <span class="research-status">${escapeHTML(loc.stage)} · ${escapeHTML(loc.status)}</span>
               <span class="research-period">${escapeHTML(work.domain)}</span>
             </div>
             <h3 class="research-work-title">
-              <a class="research-title-link" href="dossier.html?id=${encodeURIComponent(work.id)}">${escapeHTML(work.title)}</a>
+              <a class="research-title-link" href="dossier.html?id=${encodeURIComponent(work.id)}">${escapeHTML(loc.title)}</a>
             </h3>
-            <p class="research-work-abstract">${escapeHTML(work.abstract)}</p>
+            <p class="research-work-abstract">${escapeHTML(loc.abstract)}</p>
             ${
-              work.mechanism
-                ? `<div class="research-explanation"><strong>Core Mechanism</strong><p>${escapeHTML(work.mechanism)}</p></div>`
+              loc.mechanism
+                ? `<div class="research-explanation"><strong>${escapeHTML(mechLabel)}</strong><p>${escapeHTML(loc.mechanism)}</p></div>`
                 : ""
             }
             <div class="research-work-footer">
               <div class="research-tags">${tags}</div>
               <div class="research-links">
-                <a class="research-link-btn" href="dossier.html?id=${encodeURIComponent(work.id)}">System Dossier ${arrow}</a>
-                <a class="research-link-btn" href="${escapeHTML(work.codeUrl)}" target="_blank" rel="noreferrer">Source Code ${arrow}</a>
+                <a class="research-link-btn" href="dossier.html?id=${encodeURIComponent(work.id)}">${escapeHTML(dossierLabel)} ${arrow}</a>
+                <a class="research-link-btn" href="${escapeHTML(work.codeUrl)}" target="_blank" rel="noreferrer">${escapeHTML(codeLabel)} ${arrow}</a>
               </div>
             </div>
           </article>`;
@@ -96,7 +110,8 @@
   }
 
   function renderAbout() {
-    const page = config.pages.about;
+    const lang = getLang();
+    const page = config.pages.about[lang] || config.pages.about.en;
     const site = config.site;
     document.title = page.metaTitle;
     const nowRows = (page.now || [])
@@ -111,9 +126,9 @@
         <div>
           <p class="overline">${escapeHTML(page.overline)}</p>
           <h1>${escapeHTML(site.name)}</h1>
-          <p class="role">${escapeHTML(site.role)}</p>
+          <p class="role">${escapeHTML(pick(site.role, lang))}</p>
         </div>
-        <img class="avatar" src="${escapeHTML(site.profileImage)}" width="98" height="98" alt="${escapeHTML(site.name)}">
+        <img class="avatar" src="${escapeHTML(site.profileImage)}" width="104" height="104" alt="${escapeHTML(site.name)}">
       </section>
       <section class="section reveal" style="--d:60ms">
         <h2>${escapeHTML(page.greeting)}</h2>
@@ -136,7 +151,8 @@
   }
 
   function renderPractice() {
-    const page = config.pages.practice;
+    const lang = getLang();
+    const page = config.pages.practice[lang] || config.pages.practice.en;
     document.title = page.metaTitle;
     const directions = (page.directions || [])
       .map(
@@ -171,16 +187,18 @@
   }
 
   function renderWorks() {
-    const page = config.pages.works;
+    const lang = getLang();
+    const page = config.pages.works[lang] || config.pages.works.en;
+    const f = page.filters || {};
     document.title = page.metaTitle;
     return `
       ${renderPageIntro(page)}
       <section class="section reveal">
         <div class="filter-bar" role="tablist" aria-label="Filter system works">
-          <button class="filter-pill is-active" data-filter="all" type="button">All Stages</button>
-          <button class="filter-pill" data-filter="architecture" type="button">Architecture &amp; Spec</button>
-          <button class="filter-pill" data-filter="ux-uat" type="button">Checkout UX &amp; UAT</button>
-          <button class="filter-pill" data-filter="analytics" type="button">SQL &amp; Risk BI</button>
+          <button class="filter-pill is-active" data-filter="all" type="button">${escapeHTML(f.all || "All Stages")}</button>
+          <button class="filter-pill" data-filter="architecture" type="button">${escapeHTML(f.architecture || "Architecture & Spec")}</button>
+          <button class="filter-pill" data-filter="ux-uat" type="button">${escapeHTML(f["ux-uat"] || "Checkout UX & UAT")}</button>
+          <button class="filter-pill" data-filter="analytics" type="button">${escapeHTML(f.analytics || "SQL & Risk BI")}</button>
         </div>
         <div class="research-works-list" id="worksMount">${renderWorkCards(config.works)}</div>
       </section>
@@ -188,8 +206,8 @@
   }
 
   function renderNotes() {
-    const page = config.pages.notes;
     const lang = getLang();
+    const page = config.pages.notes[lang] || config.pages.notes.en;
     document.title = page.metaTitle;
 
     const list = (config.notes || [])
@@ -199,7 +217,7 @@
           <article class="reveal" style="--d:${idx * 60}ms">
             <span>${escapeHTML(n.number)}</span>
             <div>
-              <small>${escapeHTML(n.category)}</small>
+              <small>${escapeHTML(pick(n.category, lang))}</small>
               <a href="note.html?id=${encodeURIComponent(n.id)}">
                 <h3>${escapeHTML(localized.title)}</h3>
               </a>
@@ -215,20 +233,15 @@
     return `
       ${renderPageIntro(page)}
       <section class="section reveal">
-        <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:18px;">
-          <h2 style="margin:0">${lang === "vi" ? "Danh mục ghi chép" : "Archive"}</h2>
-          <div class="writing-language-toggle" role="group" aria-label="Language selector">
-            <button type="button" data-lang="en" aria-pressed="${lang === "en"}">EN</button>
-            <button type="button" data-lang="vi" aria-pressed="${lang === "vi"}">VI</button>
-          </div>
-        </div>
+        <h2>${escapeHTML(page.archiveTitle || (lang === "vi" ? "Danh mục bài viết" : "Archive"))}</h2>
         <div class="writing-list">${list}</div>
       </section>
       <div data-site-footer></div>`;
   }
 
   function renderStack() {
-    const page = config.pages.stack;
+    const lang = getLang();
+    const page = config.pages.stack[lang] || config.pages.stack.en;
     document.title = page.metaTitle;
     const rows = (page.categories || [])
       .map((cat, idx) => {
@@ -250,7 +263,7 @@
     return `
       ${renderPageIntro(page)}
       <section class="section reach reveal">
-        <h2>Domains &amp; Tooling</h2>
+        <h2>${escapeHTML(page.sectionTitle || "Domains & Tooling")}</h2>
         <div class="library-list">${rows}</div>
       </section>
       <div data-site-footer></div>`;
@@ -303,10 +316,6 @@
       <article class="writing-article">
         <div class="writing-article-toolbar">
           <a class="writing-back" href="works.html">← ${lang === "vi" ? "Quay lại danh mục dự án" : "Back to system works"}</a>
-          <div class="writing-language-toggle" role="group" aria-label="Language selector">
-            <button type="button" data-lang="en" aria-pressed="${lang === "en"}">EN</button>
-            <button type="button" data-lang="vi" aria-pressed="${lang === "vi"}">VI</button>
-          </div>
         </div>
         <header class="writing-article-header">
           <p class="overline">${escapeHTML(doc.overline)}</p>
@@ -351,13 +360,9 @@
       <article class="writing-article">
         <div class="writing-article-toolbar">
           <a class="writing-back" href="notes.html">← ${lang === "vi" ? "Quay lại ghi chép" : "Back to field notes"}</a>
-          <div class="writing-language-toggle" role="group" aria-label="Language selector">
-            <button type="button" data-lang="en" aria-pressed="${lang === "en"}">EN</button>
-            <button type="button" data-lang="vi" aria-pressed="${lang === "vi"}">VI</button>
-          </div>
         </div>
         <header class="writing-article-header">
-          <p class="overline">${escapeHTML(note.category)}</p>
+          <p class="overline">${escapeHTML(pick(note.category, lang))}</p>
           <h1>${escapeHTML(doc.title)}</h1>
           <p class="writing-lead">${escapeHTML(doc.summary)}</p>
           <div class="writing-meta">
@@ -384,9 +389,8 @@
       <div data-site-footer></div>`;
   }
 
-  function renderHeader() {
-    const mount = document.querySelector("[data-site-header]");
-    if (!mount) return;
+  function buildHeaderHTML() {
+    const lang = getLang();
     const activePage = document.body.dataset.page || "about";
     const activeMap = { dossier: "works", note: "notes" };
     const effectiveKey = activeMap[activePage] || activePage;
@@ -394,16 +398,20 @@
     const links = (config.navigation || [])
       .map((item) => {
         const current = item.key === effectiveKey ? ' aria-current="page"' : "";
-        return `<a href="${escapeHTML(item.href)}"${current}>${escapeHTML(item.label)}</a>`;
+        return `<a href="${escapeHTML(item.href)}"${current}>${escapeHTML(pick(item.label, lang))}</a>`;
       })
       .join("");
 
-    mount.outerHTML = `
+    return `
       <header class="site-header" id="siteHeader">
         <div class="header-inner">
           <a class="brand" href="index.html">${escapeHTML(config.site.shortName)}</a>
           <nav class="main-nav" id="main-nav" aria-label="Main navigation">${links}</nav>
           <div class="header-tools">
+            <div class="lang-toggle" role="group" aria-label="Language switch">
+              <button type="button" data-set-lang="en" aria-pressed="${lang === "en"}">EN</button>
+              <button type="button" data-set-lang="vi" aria-pressed="${lang === "vi"}">VI</button>
+            </div>
             <button class="theme-toggle" type="button" aria-label="Toggle color theme"></button>
             <button class="menu-toggle" type="button" aria-label="Open menu" aria-controls="main-nav" aria-expanded="false">
               <span class="menu-icon"><span></span></span>
@@ -413,37 +421,50 @@
       </header>`;
   }
 
+  function renderHeader() {
+    const mount = document.querySelector("[data-site-header]") || document.getElementById("siteHeader");
+    if (!mount) return;
+    mount.outerHTML = buildHeaderHTML();
+    updateThemeButton();
+    bindHeaderControls();
+  }
+
   function renderFooter() {
     const mount = document.querySelector("[data-site-footer]");
     if (!mount) return;
+    const lang = getLang();
     const site = config.site;
     const profiles = (config.profiles || [])
       .map(
         (p) => `
         <a href="${escapeHTML(p.href)}" target="_blank" rel="me noreferrer">
-          <span>${escapeHTML(p.label)}</span>
+          <span>${escapeHTML(pick(p.label, lang))}</span>
           <strong>${escapeHTML(p.value)}</strong>
           ${arrow}
         </a>`
       )
       .join("");
 
+    const contactLabel = lang === "vi" ? "Liên hệ" : "Contact";
+    const tagline =
+      lang === "vi" ? "Đặc tả · Kiến trúc · Dữ liệu" : "Specification · Architecture · Data";
+
     mount.outerHTML = `
       <footer class="site-footer">
         <div class="footer-main">
           <div class="footer-identity">
             <strong>${escapeHTML(site.name)}</strong>
-            <span>${escapeHTML(site.footerRole)}</span>
+            <span>${escapeHTML(pick(site.footerRole, lang))}</span>
           </div>
           <div class="footer-contact">
-            <span>Contact</span>
+            <span>${escapeHTML(contactLabel)}</span>
             <a href="mailto:${escapeHTML(site.email)}">${escapeHTML(site.email)} ${arrow}</a>
           </div>
         </div>
         <nav class="footer-links" aria-label="Professional profiles">${profiles}</nav>
         <div class="footer-bottom">
-          <span>© ${escapeHTML(site.copyrightYear)} ${escapeHTML(site.name)} · ${escapeHTML(site.location)}</span>
-          <span>Specification · Architecture · Data</span>
+          <span>© ${escapeHTML(site.copyrightYear)} ${escapeHTML(site.name)} · ${escapeHTML(pick(site.location, lang))}</span>
+          <span>${escapeHTML(tagline)}</span>
         </div>
       </footer>`;
   }
@@ -495,14 +516,6 @@
       });
     });
 
-    // Bilingual EN / VI switcher
-    document.querySelectorAll(".writing-language-toggle button").forEach((btn) => {
-      btn.addEventListener("click", () => {
-        setLang(btn.dataset.lang);
-        mountCurrentPage();
-      });
-    });
-
     // Code Copy button
     document.querySelectorAll(".code-copy-btn").forEach((btn) => {
       btn.addEventListener("click", async () => {
@@ -517,6 +530,36 @@
             btn.classList.remove("is-copied");
           }, 1600);
         } catch (_) {}
+      });
+    });
+  }
+
+  function bindHeaderControls() {
+    const themeBtn = document.querySelector(".theme-toggle");
+    const menuBtn = document.querySelector(".menu-toggle");
+    const nav = document.querySelector(".main-nav");
+
+    themeBtn?.addEventListener("click", () => {
+      root.dataset.theme = root.dataset.theme === "dark" ? "light" : "dark";
+      try {
+        localStorage.setItem("portfolio-theme", root.dataset.theme);
+      } catch (_) {}
+      updateThemeButton();
+    });
+
+    menuBtn?.addEventListener("click", () => {
+      const open = menuBtn.getAttribute("aria-expanded") !== "true";
+      menuBtn.setAttribute("aria-expanded", String(open));
+      nav?.classList.toggle("is-open", open);
+    });
+
+    document.querySelectorAll("[data-set-lang]").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const nextLang = btn.dataset.setLang;
+        if (nextLang === getLang()) return;
+        setLang(nextLang);
+        renderHeader();
+        mountCurrentPage();
       });
     });
   }
@@ -542,7 +585,6 @@
   }
 
   function setupChromeExtras() {
-    // Top Scroll Progress + Back-to-top + Cursor Aura
     const progress = document.createElement("div");
     progress.className = "scroll-progress";
     document.body.prepend(progress);
@@ -595,7 +637,6 @@
       { passive: true }
     );
 
-    // First-visit Editorial Preloader (plays once per tab session)
     let seenLoader = false;
     try {
       seenLoader = sessionStorage.getItem("pdp-editorial-loaded") === "1";
@@ -621,26 +662,10 @@
     }
   }
 
-  function bindGlobalEvents() {
-    const themeBtn = document.querySelector(".theme-toggle");
-    const menuBtn = document.querySelector(".menu-toggle");
-    const nav = document.querySelector(".main-nav");
-
-    themeBtn?.addEventListener("click", () => {
-      root.dataset.theme = root.dataset.theme === "dark" ? "light" : "dark";
-      try {
-        localStorage.setItem("portfolio-theme", root.dataset.theme);
-      } catch (_) {}
-      updateThemeButton();
-    });
-
-    menuBtn?.addEventListener("click", () => {
-      const open = menuBtn.getAttribute("aria-expanded") !== "true";
-      menuBtn.setAttribute("aria-expanded", String(open));
-      nav?.classList.toggle("is-open", open);
-    });
-
+  function bindGlobalNavigation() {
     document.addEventListener("keydown", (e) => {
+      const nav = document.querySelector(".main-nav");
+      const menuBtn = document.querySelector(".menu-toggle");
       if (e.key === "Escape" && nav?.classList.contains("is-open")) {
         nav.classList.remove("is-open");
         menuBtn?.setAttribute("aria-expanded", "false");
@@ -650,6 +675,8 @@
     document.addEventListener("click", (e) => {
       const target = e.target instanceof Element ? e.target : null;
       if (!target) return;
+      const nav = document.querySelector(".main-nav");
+      const menuBtn = document.querySelector(".menu-toggle");
       if (nav?.classList.contains("is-open") && !target.closest(".site-header")) {
         nav.classList.remove("is-open");
         menuBtn?.setAttribute("aria-expanded", "false");
@@ -681,11 +708,11 @@
   }
 
   function init() {
+    root.lang = getLang();
     renderHeader();
     mountCurrentPage();
-    updateThemeButton();
     setupChromeExtras();
-    bindGlobalEvents();
+    bindGlobalNavigation();
     requestAnimationFrame(() => document.body.classList.add("is-ready"));
   }
 
