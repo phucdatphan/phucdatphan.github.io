@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <rect width="64" height="64" rx="14" fill="#171918"/>
+  <rect x="3" y="3" width="58" height="58" rx="11" stroke="#343735" stroke-width="1.5"/>
+  <circle cx="49" cy="15" r="4" fill="#71cabe"/>
+  <text x="31" y="40" text-anchor="middle" fill="#eeefec" font-family="Georgia, 'Times New Roman', serif" font-size="25" font-weight="600" letter-spacing="-1">PD</text>
+</svg>
