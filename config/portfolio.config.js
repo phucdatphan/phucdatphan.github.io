@@ -54,7 +54,7 @@ window.PORTFOLIO_CONFIG = {
         overline: "About",
         greeting: "Hi there.",
         introduction: [
-          "I am an Innovation and Technology graduate from the **University of Economics Ho Chi Minh City (UEH)**, based in Vietnam.",
+          "I am an Innovation and Technology graduate (**High Distinction**) from the **University of Economics Ho Chi Minh City (UEH)**, based in Vietnam.",
           "My work sits at the intersection of [specification-driven business analysis](practice.html), FinTech payment workflows, and relational data diagnostics. Rather than treating business documentation and software engineering as separate silos, I pair BABOK-aligned specifications directly with working prototypes and analytical SQL pipelines.",
           "This website is a quiet record of the [system architectures](works.html) I build, the [methods and tools](stack.html) I rely on, and the [field notes](notes.html) I write along the way."
         ],
@@ -96,7 +96,7 @@ window.PORTFOLIO_CONFIG = {
         overline: "Giới thiệu",
         greeting: "Xin chào.",
         introduction: [
-          "Tôi tốt nghiệp ngành Công nghệ và Đổi mới sáng tạo tại **Đại học Kinh tế TP. Hồ Chí Minh (UEH)**.",
+          "Tôi tốt nghiệp loại **Xuất sắc (High Distinction)** ngành Công nghệ và Đổi mới sáng tạo tại **Đại học Kinh tế TP. Hồ Chí Minh (UEH)**.",
           "Công việc của tôi nằm ở giao điểm giữa [phân tích nghiệp vụ hướng đặc tả](practice.html), luồng thanh toán FinTech và chẩn đoán dữ liệu quan hệ. Thay vì tách rời tài liệu nghiệp vụ khỏi kỹ thuật phần mềm, tôi kết hợp đặc tả chuẩn BABOK trực tiếp với các bản mẫu hệ thống chạy thực tế và truy vấn phân tích SQL.",
           "Trang web này là nơi lưu giữ có hệ thống các [kiến trúc dự án](works.html) tôi xây dựng, [phương pháp và bộ công cụ](stack.html) tôi sử dụng, cùng những [ghi chép chuyên môn](notes.html) đúc kết trong quá trình làm việc."
         ],
