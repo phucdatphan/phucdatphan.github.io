@@ -4,10 +4,15 @@
   if (!config) return;
 
   const arrow = '<span class="arrow" aria-hidden="true">↗</span>';
+
+  const searchIcon =
+    '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>';
+
   const sunIcon =
-    '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M12 2v2M12 20v2M4.93 4.93l1.42 1.42M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.42-1.42M17.66 6.34l1.41-1.41" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>';
+    '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 2v2M12 20v2M4.93 4.93l1.42 1.42M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.42-1.42M17.66 6.34l1.41-1.41" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>';
+
   const moonIcon =
-    '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12.8A8.5 8.5 0 0 1 11.2 3a6.8 6.8 0 1 0 9.8 9.8Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>';
+    '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12.8A8.5 8.5 0 0 1 11.2 3a6.8 6.8 0 1 0 9.8 9.8Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>';
 
   function escapeHTML(str) {
     return String(str ?? "")
@@ -47,12 +52,13 @@
     return val ?? "";
   }
 
-  function renderLinks(links) {
+  function renderLinks(links, primaryFirst) {
     if (!links?.length) return "";
     return `<div class="inline-links">${links
-      .map((l) => {
+      .map((l, idx) => {
         const ext = l.external ? ' target="_blank" rel="noreferrer"' : "";
-        return `<a href="${escapeHTML(l.href)}"${ext}>${escapeHTML(l.label)} ${arrow}</a>`;
+        const cls = primaryFirst && idx === 0 ? "btn-pop" : "btn-ghost";
+        return `<a class="${cls}" href="${escapeHTML(l.href)}"${ext}>${escapeHTML(l.label)} ${arrow}</a>`;
       })
       .join("")}</div>`;
   }
@@ -63,18 +69,31 @@
       .join("")}</div>`;
   }
 
-  function renderPageIntro(page) {
-    return `<header class="page-intro reveal"><p class="overline">${escapeHTML(
-      page.overline
-    )}</p><h1>${escapeHTML(page.title)}</h1><p>${escapeHTML(
-      page.description
-    )}</p></header>`;
+  function renderPageIntro(page, pills) {
+    const pillHtml = pills?.length
+      ? `<div class="intro-pills">${pills
+          .map((p) => `<span class="meta-pill meta-pill--${p.tone}">${escapeHTML(p.label)}</span>`)
+          .join("")}</div>`
+      : "";
+    return `
+      <header class="page-intro">
+        <p class="overline">${escapeHTML(page.overline)}</p>
+        <h1>${escapeHTML(page.title)}</h1>
+        <p class="page-intro-desc">${escapeHTML(page.description)}</p>
+        ${pillHtml}
+      </header>`;
   }
 
-  function renderWorkCards(items) {
+  function stagePillTone(id) {
+    if (id === "stage-1") return "green";
+    if (id === "stage-2") return "sand";
+    return "violet";
+  }
+
+  function renderWorkCards(items, includeDiagram) {
     const lang = getLang();
     return items
-      .map((work, idx) => {
+      .map((work) => {
         const loc = work[lang] || work.en || work;
         const tags = (work.tags || [])
           .map((t) => `<span class="tag-badge">${escapeHTML(t)}</span>`)
@@ -82,26 +101,38 @@
         const mechLabel = lang === "vi" ? "Cơ chế cốt lõi" : "Core Mechanism";
         const dossierLabel = lang === "vi" ? "Hồ sơ hệ thống" : "System Dossier";
         const codeLabel = lang === "vi" ? "Mã nguồn" : "Source Code";
+        const diagramHtml =
+          includeDiagram && window.PORTFOLIO_DIAGRAMS
+            ? window.PORTFOLIO_DIAGRAMS.renderStage(work.id, lang, { step: 1, compact: true })
+            : "";
+
         return `
-          <article class="research-work-card reveal" style="--d:${idx * 60}ms" data-category="${escapeHTML(work.category)}">
-            <div class="research-work-meta">
-              <span class="research-status">${escapeHTML(loc.stage)} · ${escapeHTML(loc.status)}</span>
-              <span class="research-period">${escapeHTML(work.domain)}</span>
+          <article class="work-card" data-category="${escapeHTML(work.category)}">
+            <div class="work-meta">
+              <span class="meta-pill meta-pill--${stagePillTone(work.id)}">${escapeHTML(loc.stage)} · ${escapeHTML(loc.status)}</span>
+              <span class="work-domain">${escapeHTML(work.domain)}</span>
             </div>
-            <h3 class="research-work-title">
-              <a class="research-title-link" href="dossier.html?id=${encodeURIComponent(work.id)}">${escapeHTML(loc.title)}</a>
+            <h3 class="work-title">
+              <a href="dossier.html?id=${encodeURIComponent(work.id)}">${escapeHTML(loc.title)}</a>
             </h3>
-            <p class="research-work-abstract">${escapeHTML(loc.abstract)}</p>
+            <p class="work-abstract">${escapeHTML(loc.abstract)}</p>
+            ${diagramHtml}
             ${
               loc.mechanism
-                ? `<div class="research-explanation"><strong>${escapeHTML(mechLabel)}</strong><p>${escapeHTML(loc.mechanism)}</p></div>`
+                ? `<div class="mechanism-box">
+                    <div class="mechanism-box__head">
+                      <span class="mechanism-box__icon" aria-hidden="true">✦</span>
+                      <span>${escapeHTML(mechLabel)}</span>
+                    </div>
+                    <p>${escapeHTML(loc.mechanism)}</p>
+                  </div>`
                 : ""
             }
-            <div class="research-work-footer">
-              <div class="research-tags">${tags}</div>
-              <div class="research-links">
-                <a class="research-link-btn" href="dossier.html?id=${encodeURIComponent(work.id)}">${escapeHTML(dossierLabel)} ${arrow}</a>
-                <a class="research-link-btn" href="${escapeHTML(work.codeUrl)}" target="_blank" rel="noreferrer">${escapeHTML(codeLabel)} ${arrow}</a>
+            <div class="work-footer">
+              <div class="tag-list">${tags}</div>
+              <div class="work-actions">
+                <a class="btn-pop" href="dossier.html?id=${encodeURIComponent(work.id)}">${escapeHTML(dossierLabel)} ${arrow}</a>
+                <a class="btn-ghost" href="${escapeHTML(work.codeUrl)}" target="_blank" rel="noreferrer">${escapeHTML(codeLabel)} ${arrow}</a>
               </div>
             </div>
           </article>`;
@@ -114,39 +145,78 @@
     const page = config.pages.about[lang] || config.pages.about.en;
     const site = config.site;
     document.title = page.metaTitle;
+
     const nowRows = (page.now || [])
       .map(
-        (item) =>
-          `<div><time>${escapeHTML(item.label)}</time><p>${richText(item.text)}</p></div>`
+        (item) => `
+        <div class="now-tile">
+          <time>${escapeHTML(item.label)}</time>
+          <p>${richText(item.text)}</p>
+        </div>`
       )
       .join("");
 
+    const heroPills =
+      lang === "vi"
+        ? [
+            { label: "BABOK · Đặc tả", tone: "green" },
+            { label: "FinTech · IPN", tone: "violet" },
+            { label: "SQL · Đối soát", tone: "sand" }
+          ]
+        : [
+            { label: "BABOK · Specs", tone: "green" },
+            { label: "FinTech · IPN", tone: "violet" },
+            { label: "SQL · Recon", tone: "sand" }
+          ];
+
     return `
-      <section class="intro reveal">
+      <section class="intro-sheet">
         <div>
           <p class="overline">${escapeHTML(page.overline)}</p>
           <h1>${escapeHTML(site.name)}</h1>
           <p class="role">${escapeHTML(pick(site.role, lang))}</p>
+          <div class="intro-pills">
+            ${heroPills.map((p) => `<span class="meta-pill meta-pill--${p.tone}">${escapeHTML(p.label)}</span>`).join("")}
+          </div>
         </div>
-        <img class="avatar" src="${escapeHTML(site.profileImage)}" width="104" height="104" alt="${escapeHTML(site.name)}">
+        <div class="avatar-frame">
+          <img class="avatar" src="${escapeHTML(site.profileImage)}" width="104" height="104" alt="${escapeHTML(site.name)}">
+        </div>
       </section>
-      <section class="section reveal" style="--d:60ms">
-        <h2>${escapeHTML(page.greeting)}</h2>
+
+      <section class="paper-sheet">
+        <div class="section-head">
+          <h2>${escapeHTML(page.greeting)}</h2>
+          <span class="section-count">01 · ${lang === "vi" ? "Hồ sơ" : "Profile"}</span>
+        </div>
         ${renderParagraphs(page.introduction)}
-        ${renderLinks(page.introductionLinks)}
+        ${renderLinks(page.introductionLinks, true)}
       </section>
-      <section class="section reveal" style="--d:110ms">
-        <h2>${escapeHTML(page.nowTitle)}</h2>
-        <div class="year-list">${nowRows}</div>
+
+      <section class="paper-sheet">
+        <div class="section-head">
+          <h2>${escapeHTML(page.nowTitle)}</h2>
+          <span class="section-count">${(page.now || []).length} ${lang === "vi" ? "trọng tâm" : "tracks"}</span>
+        </div>
+        <div class="now-grid">${nowRows}</div>
       </section>
-      <section class="section reveal" style="--d:150ms">
-        <h2>${escapeHTML(page.exploreTitle)}</h2>
-        <p class="prose">${richText(page.explore)}</p>
-      </section>
-      <section class="section reach reveal" style="--d:190ms">
-        <h2>${escapeHTML(page.reachTitle)}</h2>
-        ${renderLinks(page.reachLinks)}
-      </section>
+
+      <div class="about-split">
+        <section class="paper-sheet">
+          <div class="section-head">
+            <h2>${escapeHTML(page.exploreTitle)}</h2>
+            <span class="section-count">⌘K</span>
+          </div>
+          <p class="prose">${richText(page.explore)}</p>
+        </section>
+        <section class="paper-sheet">
+          <div class="section-head">
+            <h2>${escapeHTML(page.reachTitle)}</h2>
+            <span class="section-count">${lang === "vi" ? "Trực tiếp" : "Direct"}</span>
+          </div>
+          ${renderLinks(page.reachLinks, true)}
+        </section>
+      </div>
       <div data-site-footer></div>`;
   }
 
@@ -154,34 +224,54 @@
     const lang = getLang();
     const page = config.pages.practice[lang] || config.pages.practice.en;
     document.title = page.metaTitle;
+
     const directions = (page.directions || [])
       .map(
-        (d, idx) => `
-        <article class="reveal" style="--d:${idx * 55}ms">
-          <span>${escapeHTML(d.number)}</span>
-          <div>
+        (d) => `
+        <article class="direction-card">
+          <div class="direction-badge">
+            <span class="direction-num">${escapeHTML(d.number)}</span>
             <small>${escapeHTML(d.title)}</small>
-            <h3>${escapeHTML(d.question)}</h3>
-            <p>${escapeHTML(d.detail)}</p>
           </div>
+          <h3>${escapeHTML(d.question)}</h3>
+          <p>${escapeHTML(d.detail)}</p>
         </article>`
       )
       .join("");
 
+    const pills =
+      lang === "vi"
+        ? [
+            { label: "3 trụ cột", tone: "green" },
+            { label: "BABOK → SQL", tone: "violet" }
+          ]
+        : [
+            { label: "3 pillars", tone: "green" },
+            { label: "BABOK → SQL", tone: "violet" }
+          ];
+
     return `
-      ${renderPageIntro(page)}
-      <section class="section reveal">
-        <h2>${escapeHTML(page.listTitle)}</h2>
-        <div class="research-list">${directions}</div>
+      ${renderPageIntro(page, pills)}
+      <section class="paper-sheet">
+        <div class="section-head">
+          <h2>${escapeHTML(page.listTitle)}</h2>
+          <span class="section-count">I – III</span>
+        </div>
+        <div class="directions-grid">${directions}</div>
       </section>
-      <section class="section reveal">
-        <h2>${escapeHTML(page.worksTitle)}</h2>
-        <div class="research-works-list">${renderWorkCards(config.works)}</div>
+      <section class="paper-sheet">
+        <div class="section-head">
+          <h2>${escapeHTML(page.worksTitle)}</h2>
+          <span class="section-count">${config.works.length} ${lang === "vi" ? "giai đoạn" : "stages"}</span>
+        </div>
+        <div class="works-stack">${renderWorkCards(config.works, true)}</div>
       </section>
-      <section class="section reach reveal">
-        <h2>${escapeHTML(page.methodTitle)}</h2>
+      <section class="paper-sheet">
+        <div class="section-head">
+          <h2>${escapeHTML(page.methodTitle)}</h2>
+        </div>
         ${renderParagraphs(page.method)}
-        ${renderLinks(page.methodLinks)}
+        ${renderLinks(page.methodLinks, true)}
       </section>
       <div data-site-footer></div>`;
   }
@@ -191,16 +281,30 @@
     const page = config.pages.works[lang] || config.pages.works.en;
     const f = page.filters || {};
     document.title = page.metaTitle;
+
+    const pills =
+      lang === "vi"
+        ? [
+            { label: "3 Giai đoạn", tone: "green" },
+            { label: "Sơ đồ tương tác", tone: "violet" },
+            { label: "Hệ thống Ví điện tử", tone: "sand" }
+          ]
+        : [
+            { label: "3 Stages", tone: "green" },
+            { label: "Interactive Diagrams", tone: "violet" },
+            { label: "E-Wallet Suite", tone: "sand" }
+          ];
+
     return `
-      ${renderPageIntro(page)}
-      <section class="section reveal">
+      ${renderPageIntro(page, pills)}
+      <section>
         <div class="filter-bar" role="tablist" aria-label="Filter system works">
-          <button class="filter-pill is-active" data-filter="all" type="button">${escapeHTML(f.all || "All Stages")}</button>
-          <button class="filter-pill" data-filter="architecture" type="button">${escapeHTML(f.architecture || "Architecture & Spec")}</button>
-          <button class="filter-pill" data-filter="ux-uat" type="button">${escapeHTML(f["ux-uat"] || "Checkout UX & UAT")}</button>
-          <button class="filter-pill" data-filter="analytics" type="button">${escapeHTML(f.analytics || "SQL & Risk BI")}</button>
+          <button class="filter-pill is-active" data-filter="all" type="button" role="tab" aria-selected="true">${escapeHTML(f.all || "All Stages")}</button>
+          <button class="filter-pill" data-filter="architecture" type="button" role="tab" aria-selected="false">${escapeHTML(f.architecture || "Architecture & Spec")}</button>
+          <button class="filter-pill" data-filter="ux-uat" type="button" role="tab" aria-selected="false">${escapeHTML(f["ux-uat"] || "Checkout UX & UAT")}</button>
+          <button class="filter-pill" data-filter="analytics" type="button" role="tab" aria-selected="false">${escapeHTML(f.analytics || "SQL & Risk BI")}</button>
         </div>
-        <div class="research-works-list" id="worksMount">${renderWorkCards(config.works)}</div>
+        <div class="works-stack" id="worksMount">${renderWorkCards(config.works, true)}</div>
       </section>
       <div data-site-footer></div>`;
   }
@@ -211,18 +315,18 @@
     document.title = page.metaTitle;
 
     const list = (config.notes || [])
-      .map((n, idx) => {
+      .map((n) => {
         const localized = n[lang] || n.en;
         return `
-          <article class="reveal" style="--d:${idx * 60}ms">
-            <span>${escapeHTML(n.number)}</span>
+          <article class="note-card">
+            <span class="note-num">${escapeHTML(n.number)}</span>
             <div>
               <small>${escapeHTML(pick(n.category, lang))}</small>
               <a href="note.html?id=${encodeURIComponent(n.id)}">
                 <h3>${escapeHTML(localized.title)}</h3>
               </a>
               <p>${escapeHTML(localized.summary)}</p>
-              <a class="writing-read-link" href="note.html?id=${encodeURIComponent(n.id)}">
+              <a class="btn-ghost" href="note.html?id=${encodeURIComponent(n.id)}">
                 ${lang === "vi" ? "Đọc bài viết" : "Read note"} ${arrow}
               </a>
             </div>
@@ -230,11 +334,25 @@
       })
       .join("");
 
+    const pills =
+      lang === "vi"
+        ? [
+            { label: `${config.notes.length} bài viết`, tone: "violet" },
+            { label: "Song ngữ EN / VI", tone: "mint" }
+          ]
+        : [
+            { label: `${config.notes.length} essays`, tone: "violet" },
+            { label: "Bilingual EN / VI", tone: "mint" }
+          ];
+
     return `
-      ${renderPageIntro(page)}
-      <section class="section reveal">
-        <h2>${escapeHTML(page.archiveTitle || (lang === "vi" ? "Danh mục bài viết" : "Archive"))}</h2>
-        <div class="writing-list">${list}</div>
+      ${renderPageIntro(page, pills)}
+      <section class="paper-sheet">
+        <div class="section-head">
+          <h2>${escapeHTML(page.archiveTitle || (lang === "vi" ? "Danh mục bài viết" : "Archive"))}</h2>
+          <span class="section-count">01 – 0${config.notes.length}</span>
+        </div>
+        <div class="notes-grid">${list}</div>
       </section>
       <div data-site-footer></div>`;
   }
@@ -243,28 +361,42 @@
     const lang = getLang();
     const page = config.pages.stack[lang] || config.pages.stack.en;
     document.title = page.metaTitle;
+
+    const totalTools = (page.categories || []).reduce((acc, c) => acc + (c.items?.length || 0), 0);
     const rows = (page.categories || [])
-      .map((cat, idx) => {
+      .map((cat) => {
         const badges = (cat.items || [])
           .map((item) => `<span class="tag-badge">${escapeHTML(item)}</span>`)
           .join("");
         return `
-          <div class="reveal" style="--d:${idx * 55}ms">
-            <span>${escapeHTML(cat.code)}</span>
-            <div>
-              <h3>${escapeHTML(cat.title)}</h3>
-              <p>${escapeHTML(cat.description)}</p>
-              <div class="research-tags">${badges}</div>
-            </div>
-          </div>`;
+          <article class="stack-card">
+            <span class="stack-code">${escapeHTML(cat.code)}</span>
+            <h3>${escapeHTML(cat.title)}</h3>
+            <p>${escapeHTML(cat.description)}</p>
+            <div class="tag-list">${badges}</div>
+          </article>`;
       })
       .join("");
 
+    const pills =
+      lang === "vi"
+        ? [
+            { label: `${(page.categories || []).length} nhóm năng lực`, tone: "green" },
+            { label: `${totalTools} công cụ & chuẩn`, tone: "sand" }
+          ]
+        : [
+            { label: `${(page.categories || []).length} domains`, tone: "green" },
+            { label: `${totalTools} tools & standards`, tone: "sand" }
+          ];
+
     return `
-      ${renderPageIntro(page)}
-      <section class="section reach reveal">
-        <h2>${escapeHTML(page.sectionTitle || "Domains & Tooling")}</h2>
-        <div class="library-list">${rows}</div>
+      ${renderPageIntro(page, pills)}
+      <section class="paper-sheet">
+        <div class="section-head">
+          <h2>${escapeHTML(page.sectionTitle || "Domains & Tooling")}</h2>
+          <span class="section-count">${totalTools} items</span>
+        </div>
+        <div class="stack-grid">${rows}</div>
       </section>
       <div data-site-footer></div>`;
   }
@@ -282,6 +414,10 @@
     const prevKey = keys[idx - 1] || null;
     const nextKey = keys[idx + 1] || null;
 
+    const diagramHtml = window.PORTFOLIO_DIAGRAMS
+      ? window.PORTFOLIO_DIAGRAMS.renderStage(id, lang, { step: 0, compact: false })
+      : "";
+
     const sectionsHtml = (doc.sections || [])
       .map((sec) => {
         const paras = (sec.paragraphs || [])
@@ -291,14 +427,17 @@
           ? `<ul>${sec.bullets.map((b) => `<li>${escapeHTML(b)}</li>`).join("")}</ul>`
           : "";
         const callout = sec.callout
-          ? `<div class="callout"><div class="callout-header">${escapeHTML(
-              sec.callout.title
-            )}</div><p>${escapeHTML(sec.callout.text)}</p></div>`
+          ? `<div class="callout">
+              <div class="callout-header">
+                <span class="callout-badge" aria-hidden="true">✦</span>
+                <span>${escapeHTML(sec.callout.title)}</span>
+              </div>
+              <p>${escapeHTML(sec.callout.text)}</p>
+            </div>`
           : "";
         const codeBlock = sec.code
           ? `<div class="code-window">
               <div class="code-window-bar">
-                <div class="code-dots"><span class="code-dot red"></span><span class="code-dot yellow"></span><span class="code-dot green"></span></div>
                 <span class="code-lang">${escapeHTML(sec.codeLang || "code")}</span>
                 <button class="code-copy-btn" type="button">${lang === "vi" ? "Sao chép" : "Copy"}</button>
               </div>
@@ -313,29 +452,31 @@
     const nextDoc = nextKey ? config.dossiers[nextKey][lang] : null;
 
     return `
-      <article class="writing-article">
-        <div class="writing-article-toolbar">
-          <a class="writing-back" href="works.html">← ${lang === "vi" ? "Quay lại danh mục dự án" : "Back to system works"}</a>
-        </div>
-        <header class="writing-article-header">
+      <div class="article-toolbar">
+        <a class="btn-ghost" href="works.html">← ${lang === "vi" ? "Quay lại dự án" : "Back to works"}</a>
+        <a class="btn-pop" href="${escapeHTML(entry.codeUrl)}" target="_blank" rel="noreferrer">GitHub Repository ${arrow}</a>
+      </div>
+      <article class="article-sheet">
+        <header class="article-header">
           <p class="overline">${escapeHTML(doc.overline)}</p>
           <h1>${escapeHTML(doc.title)}</h1>
-          <p class="writing-lead">${escapeHTML(doc.lead)}</p>
-          <div class="writing-meta">
-            <span>${escapeHTML(doc.meta)}</span>
-            <a href="${escapeHTML(entry.codeUrl)}" target="_blank" rel="noreferrer" style="color:var(--accent);font-weight:600;">GitHub Repository ${arrow}</a>
+          <p class="article-lead">${escapeHTML(doc.lead)}</p>
+          <div class="article-meta">
+            <span class="article-meta-label">${escapeHTML(doc.meta)}</span>
+            <span class="meta-pill meta-pill--${stagePillTone(id)}">${id.toUpperCase()}</span>
           </div>
         </header>
-        <div class="writing-body">${sectionsHtml}</div>
-        <nav class="writing-neighbors" aria-label="Stage navigation">
+        ${diagramHtml}
+        <div class="article-body">${sectionsHtml}</div>
+        <nav class="article-neighbors" aria-label="Stage navigation">
           ${
             prevDoc
-              ? `<a href="dossier.html?id=${encodeURIComponent(prevKey)}"><small>← ${lang === "vi" ? "Giai đoạn trước" : "Previous Stage"}</small><strong>${escapeHTML(prevDoc.title)}</strong></a>`
+              ? `<a class="neighbor-card" href="dossier.html?id=${encodeURIComponent(prevKey)}"><small>← ${lang === "vi" ? "Giai đoạn trước" : "Previous Stage"}</small><strong>${escapeHTML(prevDoc.title)}</strong></a>`
               : `<div></div>`
           }
           ${
             nextDoc
-              ? `<a href="dossier.html?id=${encodeURIComponent(nextKey)}"><small>${lang === "vi" ? "Giai đoạn tiếp theo" : "Next Stage"} →</small><strong>${escapeHTML(nextDoc.title)}</strong></a>`
+              ? `<a class="neighbor-card neighbor-card--next" href="dossier.html?id=${encodeURIComponent(nextKey)}"><small>${lang === "vi" ? "Giai đoạn tiếp theo" : "Next Stage"} →</small><strong>${escapeHTML(nextDoc.title)}</strong></a>`
               : `<div></div>`
           }
         </nav>
@@ -357,31 +498,32 @@
     const next = notes[idx + 1] || null;
 
     return `
-      <article class="writing-article">
-        <div class="writing-article-toolbar">
-          <a class="writing-back" href="notes.html">← ${lang === "vi" ? "Quay lại ghi chép" : "Back to field notes"}</a>
-        </div>
-        <header class="writing-article-header">
+      <div class="article-toolbar">
+        <a class="btn-ghost" href="notes.html">← ${lang === "vi" ? "Quay lại ghi chép" : "Back to notes"}</a>
+        <span class="meta-pill meta-pill--violet">#${escapeHTML(note.number)}</span>
+      </div>
+      <article class="article-sheet">
+        <header class="article-header">
           <p class="overline">${escapeHTML(pick(note.category, lang))}</p>
           <h1>${escapeHTML(doc.title)}</h1>
-          <p class="writing-lead">${escapeHTML(doc.summary)}</p>
-          <div class="writing-meta">
-            <span>${escapeHTML(doc.meta)}</span>
-            <span>${escapeHTML(config.site.name)}</span>
+          <p class="article-lead">${escapeHTML(doc.summary)}</p>
+          <div class="article-meta">
+            <span class="article-meta-label">${escapeHTML(doc.meta)}</span>
+            <span class="article-meta-label">${escapeHTML(config.site.name)}</span>
           </div>
         </header>
-        <div class="writing-body">
+        <div class="article-body">
           ${(doc.paragraphs || []).map((p) => `<p>${escapeHTML(p)}</p>`).join("")}
         </div>
-        <nav class="writing-neighbors" aria-label="Note navigation">
+        <nav class="article-neighbors" aria-label="Note navigation">
           ${
             prev
-              ? `<a href="note.html?id=${encodeURIComponent(prev.id)}"><small>← ${lang === "vi" ? "Bài trước" : "Previous"}</small><strong>${escapeHTML((prev[lang] || prev.en).title)}</strong></a>`
+              ? `<a class="neighbor-card" href="note.html?id=${encodeURIComponent(prev.id)}"><small>← ${lang === "vi" ? "Bài trước" : "Previous"}</small><strong>${escapeHTML((prev[lang] || prev.en).title)}</strong></a>`
               : `<div></div>`
           }
           ${
             next
-              ? `<a href="note.html?id=${encodeURIComponent(next.id)}"><small>${lang === "vi" ? "Bài tiếp theo" : "Next"} →</small><strong>${escapeHTML((next[lang] || next.en).title)}</strong></a>`
+              ? `<a class="neighbor-card neighbor-card--next" href="note.html?id=${encodeURIComponent(next.id)}"><small>${lang === "vi" ? "Bài tiếp theo" : "Next"} →</small><strong>${escapeHTML((next[lang] || next.en).title)}</strong></a>`
               : `<div></div>`
           }
         </nav>
@@ -402,18 +544,25 @@
       })
       .join("");
 
+    const searchLabel = lang === "vi" ? "Tìm dự án & ghi chép…" : "Search works & notes…";
+
     return `
       <header class="site-header" id="siteHeader">
         <div class="header-inner">
           <a class="brand" href="index.html">${escapeHTML(config.site.shortName)}</a>
           <nav class="main-nav" id="main-nav" aria-label="Main navigation">${links}</nav>
           <div class="header-tools">
+            <button class="search-trigger" type="button" data-open-search aria-label="${escapeHTML(searchLabel)}">
+              ${searchIcon}
+              <span class="search-trigger-label">${escapeHTML(searchLabel)}</span>
+              <kbd>⌘K</kbd>
+            </button>
             <div class="lang-toggle" role="group" aria-label="Language switch">
               <button type="button" data-set-lang="en" aria-pressed="${lang === "en"}">EN</button>
               <button type="button" data-set-lang="vi" aria-pressed="${lang === "vi"}">VI</button>
             </div>
-            <button class="theme-toggle" type="button" aria-label="Toggle color theme"></button>
-            <button class="menu-toggle" type="button" aria-label="Open menu" aria-controls="main-nav" aria-expanded="false">
+            <button class="icon-btn theme-toggle" type="button" aria-label="Toggle color theme"></button>
+            <button class="icon-btn menu-toggle" type="button" aria-label="Open menu" aria-controls="main-nav" aria-expanded="false">
               <span class="menu-icon"><span></span></span>
             </button>
           </div>
@@ -438,8 +587,10 @@
       .map(
         (p) => `
         <a href="${escapeHTML(p.href)}" target="_blank" rel="me noreferrer">
-          <span>${escapeHTML(pick(p.label, lang))}</span>
-          <strong>${escapeHTML(p.value)}</strong>
+          <div>
+            <span>${escapeHTML(pick(p.label, lang))}</span>
+            <strong>${escapeHTML(p.value)}</strong>
+          </div>
           ${arrow}
         </a>`
       )
@@ -458,7 +609,7 @@
           </div>
           <div class="footer-contact">
             <span>${escapeHTML(contactLabel)}</span>
-            <a href="mailto:${escapeHTML(site.email)}">${escapeHTML(site.email)} ${arrow}</a>
+            <a class="btn-ghost" href="mailto:${escapeHTML(site.email)}">${escapeHTML(site.email)} ${arrow}</a>
           </div>
         </div>
         <nav class="footer-links" aria-label="Professional profiles">${profiles}</nav>
@@ -471,59 +622,228 @@
 
   function updateThemeButton() {
     const btn = document.querySelector(".theme-toggle");
-    if (!btn) return;
     const dark = root.dataset.theme === "dark";
-    btn.innerHTML = dark ? moonIcon : sunIcon;
-    btn.title = dark ? "Switch to light mode" : "Switch to dark mode";
+    const metaTheme = document.querySelector('meta[name="theme-color"]');
+    if (metaTheme) metaTheme.setAttribute("content", dark ? "#211e1a" : "#f4ebe0");
+    if (!btn) return;
+    btn.innerHTML = dark ? sunIcon : moonIcon;
+    btn.title = dark ? "Switch to light paper theme" : "Switch to dark espresso theme";
   }
 
-  function initReveal() {
-    const items = document.querySelectorAll(".reveal");
-    if (!("IntersectionObserver" in window)) {
-      items.forEach((el) => el.classList.add("is-visible"));
-      return;
+  /* ============================
+     ⌘K Command Palette
+     ============================ */
+  let searchState = { open: false, selectedIndex: 0, flatItems: [] };
+
+  function buildSearchItems(lang) {
+    const groups = [];
+    const navItems = (config.navigation || []).map((n) => ({
+      title: pick(n.label, lang),
+      sub: n.href,
+      tag: lang === "vi" ? "Trang" : "Page",
+      href: n.href,
+      haystack: `${n.label.en} ${n.label.vi} ${n.href}`.toLowerCase()
+    }));
+    groups.push({ label: lang === "vi" ? "Điều hướng" : "Pages", items: navItems });
+
+    const workItems = (config.works || []).map((w) => {
+      const loc = w[lang] || w.en;
+      return {
+        title: loc.title,
+        sub: `${loc.stage} · ${loc.status}`,
+        tag: w.id.toUpperCase(),
+        href: `dossier.html?id=${encodeURIComponent(w.id)}`,
+        haystack: `${loc.title} ${loc.abstract} ${loc.mechanism} ${(w.tags || []).join(" ")} ${w.domain}`.toLowerCase()
+      };
+    });
+    groups.push({ label: lang === "vi" ? "Hồ sơ hệ thống" : "System Dossiers", items: workItems });
+
+    const noteItems = (config.notes || []).map((n) => {
+      const loc = n[lang] || n.en;
+      const bodyText = `${(n.en?.paragraphs || []).join(" ")} ${(n.vi?.paragraphs || []).join(" ")}`;
+      return {
+        title: loc.title,
+        sub: pick(n.category, lang),
+        tag: `#${n.number}`,
+        href: `note.html?id=${encodeURIComponent(n.id)}`,
+        haystack: `${n.en?.title || ""} ${n.vi?.title || ""} ${loc.summary} ${pick(n.category, lang)} ${bodyText}`.toLowerCase()
+      };
+    });
+    groups.push({ label: lang === "vi" ? "Ghi chép chuyên môn" : "Field Notes", items: noteItems });
+
+    const stackPage = config.pages.stack[lang] || config.pages.stack.en;
+    const stackItems = (stackPage.categories || []).map((c) => ({
+      title: c.title,
+      sub: (c.items || []).slice(0, 5).join(" · "),
+      tag: c.code,
+      href: "stack.html",
+      haystack: `${c.code} ${c.title} ${c.description} ${(c.items || []).join(" ")}`.toLowerCase()
+    }));
+    groups.push({ label: lang === "vi" ? "Công cụ & Năng lực" : "Stack & Tooling", items: stackItems });
+
+    return groups;
+  }
+
+  function ensureSearchModal() {
+    let modal = document.getElementById("sxModal");
+    if (modal) return modal;
+    modal = document.createElement("div");
+    modal.id = "sxModal";
+    modal.className = "sx-backdrop";
+    modal.setAttribute("role", "dialog");
+    modal.setAttribute("aria-modal", "true");
+    modal.setAttribute("aria-label", "Search portfolio");
+    modal.innerHTML = `
+      <div class="sx-dialog">
+        <div class="sx-head">
+          ${searchIcon}
+          <input class="sx-input" id="sxInput" type="search" autocomplete="off" spellcheck="false" />
+          <button class="sx-esc" type="button" data-close-search>esc</button>
+        </div>
+        <div class="sx-list" id="sxList"></div>
+        <div class="sx-foot">
+          <div class="sx-hints">
+            <span><kbd>↑</kbd><kbd>↓</kbd> move</span>
+            <span><kbd>↵</kbd> open</span>
+            <span><kbd>esc</kbd> close</span>
+          </div>
+          <span id="sxStats"></span>
+        </div>
+      </div>`;
+    document.body.appendChild(modal);
+
+    modal.addEventListener("click", (e) => {
+      if (e.target === modal || e.target.closest("[data-close-search]")) {
+        closeSearchModal();
+      }
+    });
+
+    const input = modal.querySelector("#sxInput");
+    input.addEventListener("input", () => {
+      searchState.selectedIndex = 0;
+      renderSearchList(input.value);
+    });
+
+    return modal;
+  }
+
+  function renderSearchList(query) {
+    const lang = getLang();
+    const listEl = document.getElementById("sxList");
+    const statsEl = document.getElementById("sxStats");
+    const input = document.getElementById("sxInput");
+    if (!listEl) return;
+
+    if (input) {
+      input.placeholder =
+        lang === "vi"
+          ? "Tìm dự án, khái niệm (BABOK, IPN, SQL, Gherkin)…"
+          : "Search dossiers, notes, concepts (BABOK, IPN, SQL)…";
     }
-    const obs = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add("is-visible");
-            obs.unobserve(entry.target);
-          }
-        });
-      },
-      { threshold: 0.08, rootMargin: "0px 0px -24px 0px" }
-    );
-    items.forEach((el) => obs.observe(el));
+
+    const q = String(query || "").trim().toLowerCase();
+    const groups = buildSearchItems(lang);
+    const flat = [];
+    let html = "";
+
+    groups.forEach((group) => {
+      const matched = q ? group.items.filter((i) => i.haystack.includes(q)) : group.items;
+      if (!matched.length) return;
+      html += `<div class="sx-group-label">${escapeHTML(group.label)}</div>`;
+      matched.forEach((item) => {
+        const idx = flat.length;
+        flat.push(item);
+        const sel = idx === searchState.selectedIndex ? " is-selected" : "";
+        html += `
+          <a class="sx-item${sel}" href="${escapeHTML(item.href)}" data-sx-idx="${idx}">
+            <div>
+              <span class="sx-item-title">${escapeHTML(item.title)}</span>
+              <span class="sx-item-sub">${escapeHTML(item.sub)}</span>
+            </div>
+            <span class="sx-item-tag">${escapeHTML(item.tag)}</span>
+          </a>`;
+      });
+    });
+
+    searchState.flatItems = flat;
+    if (!flat.length) {
+      html = `<div class="sx-empty">${
+        lang === "vi" ? "Không tìm thấy mục phù hợp." : "No matching pages, dossiers, or notes."
+      }</div>`;
+    }
+    listEl.innerHTML = html;
+
+    if (statsEl) {
+      statsEl.textContent =
+        lang === "vi"
+          ? `${config.works.length} giai đoạn · ${config.notes.length} ghi chép · 4 nhóm công cụ`
+          : `${config.works.length} stages · ${config.notes.length} notes · 4 domains`;
+    }
+  }
+
+  function openSearchModal() {
+    const modal = ensureSearchModal();
+    const input = modal.querySelector("#sxInput");
+    searchState.open = true;
+    searchState.selectedIndex = 0;
+    input.value = "";
+    renderSearchList("");
+    modal.classList.add("is-open");
+    requestAnimationFrame(() => input.focus());
+  }
+
+  function closeSearchModal() {
+    const modal = document.getElementById("sxModal");
+    if (!modal) return;
+    searchState.open = false;
+    modal.classList.remove("is-open");
+  }
+
+  function moveSearchSelection(delta) {
+    const total = searchState.flatItems.length;
+    if (!total) return;
+    searchState.selectedIndex = (searchState.selectedIndex + delta + total) % total;
+    const items = document.querySelectorAll("#sxList .sx-item");
+    items.forEach((el, idx) => {
+      const active = idx === searchState.selectedIndex;
+      el.classList.toggle("is-selected", active);
+      if (active) el.scrollIntoView({ block: "nearest" });
+    });
   }
 
   function bindDynamicPageControls() {
-    // Filter pills on Works page
+    if (window.PORTFOLIO_DIAGRAMS) {
+      window.PORTFOLIO_DIAGRAMS.bind(document, getLang);
+    }
+
     document.querySelectorAll(".filter-pill").forEach((pill) => {
       pill.addEventListener("click", () => {
-        document.querySelectorAll(".filter-pill").forEach((b) => b.classList.remove("is-active"));
+        document.querySelectorAll(".filter-pill").forEach((b) => {
+          b.classList.remove("is-active");
+          b.setAttribute("aria-selected", "false");
+        });
         pill.classList.add("is-active");
+        pill.setAttribute("aria-selected", "true");
         const filter = pill.dataset.filter;
         const filtered =
-          filter === "all"
-            ? config.works
-            : config.works.filter((w) => w.category === filter);
+          filter === "all" ? config.works : config.works.filter((w) => w.category === filter);
         const mount = document.getElementById("worksMount");
         if (mount) {
-          mount.innerHTML = renderWorkCards(filtered);
-          initReveal();
+          mount.innerHTML = renderWorkCards(filtered, true);
+          if (window.PORTFOLIO_DIAGRAMS) {
+            window.PORTFOLIO_DIAGRAMS.bind(mount, getLang);
+          }
         }
       });
     });
 
-    // Code Copy button
     document.querySelectorAll(".code-copy-btn").forEach((btn) => {
       btn.addEventListener("click", async () => {
         const code = btn.closest(".code-window")?.querySelector("code")?.textContent || "";
         try {
           await navigator.clipboard.writeText(code);
           const original = btn.textContent;
-          btn.textContent = getLang() === "vi" ? "Đã chép" : "Copied";
+          btn.textContent = getLang() === "vi" ? "Đã chép ✓" : "Copied ✓";
           btn.classList.add("is-copied");
           setTimeout(() => {
             btn.textContent = original;
@@ -538,6 +858,8 @@
     const themeBtn = document.querySelector(".theme-toggle");
     const menuBtn = document.querySelector(".menu-toggle");
     const nav = document.querySelector(".main-nav");
+
+    document.querySelector("[data-open-search]")?.addEventListener("click", openSearchModal);
 
     themeBtn?.addEventListener("click", () => {
       root.dataset.theme = root.dataset.theme === "dark" ? "light" : "dark";
@@ -581,7 +903,6 @@
     mount.innerHTML = fn();
     renderFooter();
     bindDynamicPageControls();
-    initReveal();
   }
 
   function setupChromeExtras() {
@@ -589,17 +910,12 @@
     progress.className = "scroll-progress";
     document.body.prepend(progress);
 
-    const aura = document.createElement("div");
-    aura.className = "cursor-aura";
-    aura.setAttribute("aria-hidden", "true");
-    document.body.prepend(aura);
-
     const backTop = document.createElement("button");
     backTop.className = "back-top";
     backTop.type = "button";
     backTop.setAttribute("aria-label", "Back to top");
     backTop.innerHTML =
-      '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m18 15-6-6-6 6"/></svg>';
+      '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m18 15-6-6-6 6"/></svg>';
     document.body.appendChild(backTop);
     backTop.addEventListener("click", () => window.scrollTo({ top: 0, behavior: "smooth" }));
 
@@ -612,7 +928,7 @@
             const y = window.scrollY;
             const max = document.documentElement.scrollHeight - window.innerHeight;
             progress.style.transform = `scaleX(${max > 0 ? Math.min(Math.max(y / max, 0), 1) : 0})`;
-            document.getElementById("siteHeader")?.classList.toggle("is-scrolled", y > 18);
+            document.getElementById("siteHeader")?.classList.toggle("is-scrolled", y > 14);
             backTop.classList.toggle("is-shown", y > 320);
             scrollTick = false;
           });
@@ -621,49 +937,38 @@
       },
       { passive: true }
     );
-
-    let ptrTick = false;
-    window.addEventListener(
-      "pointermove",
-      (e) => {
-        if (!ptrTick) {
-          requestAnimationFrame(() => {
-            aura.style.transform = `translate3d(${e.clientX - 240}px, ${e.clientY - 240}px, 0)`;
-            ptrTick = false;
-          });
-          ptrTick = true;
-        }
-      },
-      { passive: true }
-    );
-
-    let seenLoader = false;
-    try {
-      seenLoader = sessionStorage.getItem("pdp-editorial-loaded") === "1";
-    } catch (_) {}
-
-    const loader = document.getElementById("siteLoader");
-    if (loader) {
-      if (seenLoader) {
-        loader.remove();
-      } else {
-        const fill = loader.querySelector(".loader-fill");
-        requestAnimationFrame(() => {
-          if (fill) fill.style.width = "100%";
-        });
-        setTimeout(() => {
-          loader.classList.add("is-hidden");
-          try {
-            sessionStorage.setItem("pdp-editorial-loaded", "1");
-          } catch (_) {}
-          setTimeout(() => loader.remove(), 450);
-        }, 480);
-      }
-    }
   }
 
   function bindGlobalNavigation() {
     document.addEventListener("keydown", (e) => {
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") {
+        e.preventDefault();
+        if (searchState.open) closeSearchModal();
+        else openSearchModal();
+        return;
+      }
+
+      if (searchState.open) {
+        if (e.key === "Escape") {
+          e.preventDefault();
+          closeSearchModal();
+        } else if (e.key === "ArrowDown") {
+          e.preventDefault();
+          moveSearchSelection(1);
+        } else if (e.key === "ArrowUp") {
+          e.preventDefault();
+          moveSearchSelection(-1);
+        } else if (e.key === "Enter") {
+          const item = searchState.flatItems[searchState.selectedIndex];
+          if (item?.href) {
+            e.preventDefault();
+            closeSearchModal();
+            window.location.href = item.href;
+          }
+        }
+        return;
+      }
+
       const nav = document.querySelector(".main-nav");
       const menuBtn = document.querySelector(".menu-toggle");
       if (e.key === "Escape" && nav?.classList.contains("is-open")) {
@@ -681,29 +986,6 @@
         nav.classList.remove("is-open");
         menuBtn?.setAttribute("aria-expanded", "false");
       }
-
-      const link = target.closest("a");
-      if (
-        !link ||
-        link.target === "_blank" ||
-        e.defaultPrevented ||
-        e.button !== 0 ||
-        e.metaKey ||
-        e.ctrlKey ||
-        e.shiftKey ||
-        e.altKey
-      )
-        return;
-
-      const dest = new URL(link.href, window.location.href);
-      if (dest.origin !== window.location.origin || !dest.pathname.endsWith(".html")) return;
-      if (dest.href === window.location.href) return;
-
-      e.preventDefault();
-      document.body.classList.add("is-leaving");
-      window.setTimeout(() => {
-        window.location.href = dest.href;
-      }, 140);
     });
   }
 
@@ -713,7 +995,6 @@
     mountCurrentPage();
     setupChromeExtras();
     bindGlobalNavigation();
-    requestAnimationFrame(() => document.body.classList.add("is-ready"));
   }
 
   if (document.readyState === "loading") {

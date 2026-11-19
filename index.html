@@ -3,6 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f4ebe0">
   <meta name="description" content="Portfolio of Phan Phuc Dat — IT Business Analyst, Digital Transformation, and FinTech System Architecture.">
   <meta property="og:title" content="Phan Phuc Dat — IT Business Analyst & System Architecture">
   <meta property="og:description" content="IT Business Analysis · FinTech Payment Architecture · SQL Diagnostics">
@@ -10,29 +11,25 @@
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <script>document.documentElement.classList.add('js');try{document.documentElement.dataset.theme=localStorage.getItem('portfolio-theme')||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light')}catch(e){document.documentElement.dataset.theme='light'}</script>
+  <script>document.documentElement.classList.add('js');try{document.documentElement.dataset.theme=localStorage.getItem('portfolio-theme')||'light'}catch(e){document.documentElement.dataset.theme='light'}</script>
   <link rel="stylesheet" href="css/styles.css">
   <script defer src="config/portfolio.config.js"></script>
+  <script defer src="js/diagrams.js"></script>
   <script defer src="js/site.js"></script>
 </head>
 <body data-page="about">
-  <div class="site-loader" id="siteLoader" aria-hidden="true">
-    <div class="loader-monogram">Phan Phuc Dat</div>
-    <div class="loader-track"><div class="loader-fill"></div></div>
-    <div class="loader-label">Portfolio · Loading</div>
-  </div>
   <a class="skip-link" href="#main-content">Skip to content</a>
   <div class="site-shell">
     <div data-site-header></div>
     <main class="page-content" id="main-content">
       <div class="container" data-page-content>
-        <section class="intro">
+        <section class="intro-sheet">
           <div>
             <p class="overline">About</p>
             <h1>Phan Phuc Dat</h1>
             <p class="role">IT Business Analyst &amp; System Architecture · UEH</p>
           </div>
-          <img class="avatar" src="assets/profile.jpg" width="98" height="98" alt="Phan Phuc Dat">
+          <img class="avatar" src="assets/profile.jpg" width="104" height="104" alt="Phan Phuc Dat">
         </section>
       </div>
     </main>
